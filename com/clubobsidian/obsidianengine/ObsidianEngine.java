@@ -8,7 +8,7 @@ import com.clubobsidian.obsidianengine.objects.managers.JarManager;
 import com.clubobsidian.obsidianengine.objects.managers.ModuleManager;
 import com.clubobsidian.obsidianengine.objects.module.Module;
 import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
-import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
+
 
 public class ObsidianEngine {
 	
@@ -30,6 +30,7 @@ public class ObsidianEngine {
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.loadModules();
 		ObsidianEngine.jarManager.loadJar(args);
+		
 	}
 	
 	private static void setupEngineModule()

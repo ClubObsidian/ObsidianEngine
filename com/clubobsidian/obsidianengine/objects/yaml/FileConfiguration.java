@@ -124,8 +124,13 @@ public class FileConfiguration {
 	
 	public String getString(String key)
 	{
+		Object obj = this.values.get(key);
+		if(!(obj instanceof char[]))
+		{
+			return obj.toString();
+		}
 		
-		return String.valueOf(new CloneWrapper<char[]>().clone(this.values.get(key)));
+		return String.valueOf(new CloneWrapper<char[]>().clone(obj));
 	}
 	
 	public Boolean getBoolean(String key)
@@ -145,7 +150,12 @@ public class FileConfiguration {
 	
 	public Object get(String key)
 	{
-		return new CloneWrapper<Object>().clone((this.values.get(key)));
+		Object obj = this.values.get(key);
+		if(obj instanceof char[])
+		{
+			return this.getString(key);
+		}
+		return new CloneWrapper<Object>().clone(obj);
 	}
 	
 	public boolean exists(String key)

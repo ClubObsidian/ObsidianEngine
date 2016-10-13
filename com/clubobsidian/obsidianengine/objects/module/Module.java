@@ -9,6 +9,7 @@ public class Module
 {
 	private ModuleLogger logger;
 	private String name;
+	private File file;
 	private String main;
 	private String version;
 	private String[] authors;
@@ -72,6 +73,11 @@ public class Module
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public File getFile()
+	{
+		return this.file;
 	}
 	
 	public String getMain()

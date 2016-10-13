@@ -121,13 +121,13 @@ public class ModuleManager {
 								mainClass = moduleYml.getString("main");
 								if(!moduleEntries.contains(mainClass))
 								{
-									ObsidianEngine.getLogger().fatal("The main class" + mainClass + " for module " + simpleName + " does not exist, the module will not be loaded in!");
+									ObsidianEngine.getLogger().fatal("The main class" + mainClass + " for module " + name + " does not exist, the module will not be loaded in!");
 									continue;
 								}
 							}
 							else
 							{
-								ObsidianEngine.getLogger().fatal("Module " + simpleName + " does not have a main class set in the module configuration, the module will not be loaded in!");
+								ObsidianEngine.getLogger().fatal("Module " + name + " does not have a main class set in the module configuration, the module will not be loaded in!");
 								continue;
 							}
 							
@@ -137,7 +137,7 @@ public class ModuleManager {
 							}
 							else
 							{
-								ObsidianEngine.getLogger().fatal("Module " + simpleName + " does not have a version set in the module configuration, the module will not be loaded in!");
+								ObsidianEngine.getLogger().fatal("Module " + name + " does not have a version set in the module configuration, the module will not be loaded in!");
 								continue;
 							}
 							
@@ -179,10 +179,11 @@ public class ModuleManager {
 							
 							Module module = new Module();
 							ModuleManager.setField(module, "name", name);
+							ModuleManager.setField(module, "file", f);
 							ModuleManager.setField(module, "main", mainClass);
 							ModuleManager.setField(module, "version", version);
 							ModuleManager.setField(module, "authors", authors);
-							ModuleManager.setField(module, "loadbefore", loadBefore);
+							ModuleManager.setField(module, "loadBefore", loadBefore);
 							ModuleManager.setField(module, "dependencies", dependencies);
 							ModuleManager.setField(module, "softDependencies", softDependencies);
 							this.modules.add(module);
@@ -204,16 +205,54 @@ public class ModuleManager {
 		}
 		this.loadModulesRuntime();
 	}
-	
+
 	private void loadModulesRuntime()
 	{
 		//Resolve dependencies
 		for(Module m : this.modules)
 		{
-			m.onModuleEnable();
+			
+			try
+			{
+				String name = m.getName();
+				System.out.println(name);
+				File file = m.getFile();
+				String mainClass = m.getMain();
+				String version = m.getVersion();
+				String[] authors = m.getAuthors();
+				String[] loadBefore = m.getLoadBefore();
+				String[] dependencies = m.getDependencies();
+				String[] softDependencies = m.getSoftDependencies();
+
+				URLClassLoader loader = new URLClassLoader(new URL[] {file.toURI().toURL()}, ObsidianEngine.class.getClassLoader());
+				Thread.currentThread().setContextClassLoader(loader);
+				Class<?> cl = loader.loadClass(mainClass);
+				Object obj = cl.newInstance();
+				Module module = null;
+				if(obj instanceof Module)
+				{
+					System.out.println("Is module");
+					module = (Module) obj;
+				}
+				
+				ModuleManager.setField(module, "name", name);
+				ModuleManager.setField(module, "file", file);
+				ModuleManager.setField(module, "main", mainClass);
+				ModuleManager.setField(module, "version", version);
+				ModuleManager.setField(module, "authors", authors);
+				ModuleManager.setField(module, "loadBefore", loadBefore);
+				ModuleManager.setField(module, "dependencies", dependencies);
+				ModuleManager.setField(module, "softDependencies", softDependencies);
+				m = module;
+				module.onModuleEnable();
+			}
+			catch (IOException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public ArrayList<Module> getModules()
 	{
 		return this.modules;
