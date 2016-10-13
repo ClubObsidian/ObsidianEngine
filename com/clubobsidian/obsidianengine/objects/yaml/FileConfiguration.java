@@ -148,6 +148,11 @@ public class FileConfiguration {
 		return new CloneWrapper<Object>().clone((this.values.get(key)));
 	}
 	
+	public boolean exists(String key)
+	{
+		return this.values.containsKey(key);
+	}
+	
 	public void set(String key, Object object)
 	{
 		this.values.put(key, object);

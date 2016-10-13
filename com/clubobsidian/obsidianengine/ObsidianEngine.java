@@ -1,5 +1,6 @@
 package com.clubobsidian.obsidianengine;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -7,6 +8,7 @@ import com.clubobsidian.obsidianengine.objects.managers.JarManager;
 import com.clubobsidian.obsidianengine.objects.managers.ModuleManager;
 import com.clubobsidian.obsidianengine.objects.module.Module;
 import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
+import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
 
 public class ObsidianEngine {
 	
@@ -21,14 +23,13 @@ public class ObsidianEngine {
 		//	System.out.println(str);
 		//}
 		
-		//FileConfiguration file = FileConfiguration.loadStream(ObsidianEngine.class.getResourceAsStream("test.yml"));
 		//FileConfiguration file = FileConfiguration.loadFile(new File("test.yml"));
+		//System.out.println(new File("test.yml").getAbsolutePath());
 		
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.loadModules();
 		ObsidianEngine.jarManager.loadJar(args);
-		ObsidianEngine.moduleManager.loadModulesRuntime();
 	}
 	
 	private static void setupEngineModule()

@@ -15,6 +15,8 @@ import com.clubobsidian.obsidianengine.ObsidianEngine;
 
 public class JarManager {
 	
+	private boolean standalone = false;
+	
 	private String getJarMain(final File jar)
 	{
 		String main = null;
@@ -53,9 +55,16 @@ public class JarManager {
 		if(standalone)
 		{
 			ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
+			this.standalone = true;
+			//Keep thread alive
 		}
 	}
 
+	public boolean getStandalone()
+	{
+		return this.standalone;
+	}
+	
 	private void loadJarViaLoader(final File jar,final String[] args)
 	{
 		ObsidianEngine.getLogger().info("Attempting to load jar via loader.");

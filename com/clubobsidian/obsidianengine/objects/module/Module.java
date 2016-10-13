@@ -1,11 +1,21 @@
 package com.clubobsidian.obsidianengine.objects.module;
 
+import java.io.File;
+import java.io.IOException;
+
+import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
+
 public class Module
 {
-	private String name;
 	private ModuleLogger logger;
+	private String name;
+	private String main;
 	private String version;
 	private String[] authors;
+	private String[] loadBefore;
+	private String[] dependencies;
+	private String[] softDependencies;
+	private static File moduleFolder = new File("modules");
 	
 	public void onModulePreload()
 	{
@@ -30,23 +40,67 @@ public class Module
 		return this.logger;
 	}
 	
-	private void setName(String name)
+	public FileConfiguration getConfig()
 	{
-		this.name = name;
+		return FileConfiguration.loadFile(new File(Module.moduleFolder.getAbsoluteFile(), this.name + File.separatorChar + "config.yml"));
 	}
 	
-	private void setVersion(String version)
+	public void saveDefaultConfig()
 	{
-		this.version = version;
-	}
-	
-	private void setAuthors(String... authors)
-	{
-		this.authors = authors;
+		if(!Module.moduleFolder.exists())
+		{
+			try 
+			{
+				Module.moduleFolder.createNewFile();
+			}
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		File moduleFolder = new File(Module.moduleFolder.getAbsolutePath(), this.name);
+		if(!moduleFolder.exists())
+		{
+			moduleFolder.mkdir();
+		}
+		
+		File configFile = new File(moduleFolder.getAbsolutePath(), "config.yml");
+		this.getClass().getResource(".config.yml");
 	}
 	
 	public String getName()
 	{
 		return this.name;
+	}
+	
+	public String getMain()
+	{
+		return this.main;
+	}
+	
+	public String getVersion()
+	{
+		return this.version;
+	}
+	
+	public String[] getAuthors()
+	{
+		return this.authors;
+	}
+	
+	public String[] getLoadBefore()
+	{
+		return this.loadBefore;
+	}
+	
+	public String[] getDependencies()
+	{
+		return this.dependencies;
+	}
+	
+	public String[] getSoftDependencies()
+	{
+		return this.softDependencies;
 	}
 }

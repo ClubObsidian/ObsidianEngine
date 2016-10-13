@@ -2,7 +2,9 @@ name: TestModule
 main: me.virustotal.testmodule.TestModule
 version: 1.0
 authors: [VirusTotal]
+loadbefore: [Spigot]
 depend: [Paper]
+softdepend: [Bukkit]
 list:
 - "I am a list"
 doublelist:
