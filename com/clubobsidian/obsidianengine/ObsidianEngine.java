@@ -21,6 +21,9 @@ public class ObsidianEngine {
 		//	System.out.println(str);
 		//}
 		
+		//FileConfiguration file = FileConfiguration.loadStream(ObsidianEngine.class.getResourceAsStream("test.yml"));
+		//FileConfiguration file = FileConfiguration.loadFile(new File("test.yml"));
+		
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.loadModules();

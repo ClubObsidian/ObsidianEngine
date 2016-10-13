@@ -12,5 +12,6 @@ public class ModuleLogger extends SimpleLog {
 	public ModuleLogger(Module module) 
 	{
 		super(module.getName());
+		
 	}
 }

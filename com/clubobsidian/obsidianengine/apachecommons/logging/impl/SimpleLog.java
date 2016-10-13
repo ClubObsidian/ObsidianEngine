@@ -82,7 +82,7 @@ public class SimpleLog implements Log, Serializable {
     static protected final Properties simpleLogProps = new Properties();
 
     /** The default format to use when formating dates */
-    static protected final String DEFAULT_DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm:ss:SSS zzz";
+    static protected final String DEFAULT_DATE_TIME_FORMAT = "[HH:mm:ss]";
 
     /** Include the instance name in the log message? */
     static volatile protected boolean showLogName = false;
@@ -94,7 +94,7 @@ public class SimpleLog implements Log, Serializable {
     static volatile protected boolean showShortName = true;
 
     /** Include the current time in the log message */
-    static volatile protected boolean showDateTime = false;
+    static volatile protected boolean showDateTime = true;
 
     /** The date and time format to use in the log message */
     static volatile protected String dateTimeFormat = DEFAULT_DATE_TIME_FORMAT;

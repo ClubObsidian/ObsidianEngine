@@ -1,0 +1,17 @@
+name: TestModule
+main: me.virustotal.testmodule.TestModule
+version: 1.0
+authors: [VirusTotal]
+depend: [Paper]
+list:
+- "I am a list"
+doublelist:
+- 1.0
+- 2.0
+- 3.0
+- 1.1
+integerlist:
+- 1
+- 5
+- 101001
+test: false
