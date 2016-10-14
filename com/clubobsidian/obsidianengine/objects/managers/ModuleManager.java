@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ModuleManager {
 
 	private File moduleFolder = new File("modules");
 	private ModuleStack modules = new ModuleStack();
+	private URLClassLoader loader = null;
 	
 	//Module format example
 	//name: TestModule
@@ -137,7 +139,7 @@ public class ModuleManager {
 							
 							if(moduleYml.exists("depend"))
 							{
-								moduleYml.getStringArray("depend");
+								dependencies = moduleYml.getStringArray("depend");
 							}
 							else
 							{
@@ -184,10 +186,11 @@ public class ModuleManager {
 
 	private void orderModules()
 	{
-		Iterator<Module> iterator = this.modules.iterator();
-		while(iterator.hasNext())
+		
+		for(int i = 0; i < this.modules.size(); i++)
 		{
-			Module mod = iterator.next();
+			Module mod = this.modules.get(i);
+			System.out.println("Mod size: " + this.modules.size());
 			String[] loadBefore = mod.getLoadBefore();
 			String[] dependencies = mod.getDependencies();
 			String[] softDependencies = mod.getSoftDependencies();
@@ -201,7 +204,9 @@ public class ModuleManager {
 					
 					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
 					{
+						this.modules.remove(mod);
 						this.modules.insertBefore(str, mod);
+						i++;
 					}
 				}
 			}
@@ -213,12 +218,15 @@ public class ModuleManager {
 					int indexOfFindModule = this.modules.getIndexOfModule(str);
 					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
 					{
+						this.modules.remove(mod);
+						i--;
 						this.modules.insertAfter(str, mod);
 					}
 					else if(indexOfFindModule == -1)
 					{
 						ObsidianEngine.getLogger().fatal("Cannot load module " + mod.getName() + " because the dependency " + str + " is not found!");
-						iterator.remove(); //Remove module from stack since it is no longer in use, may want to switch to disabled state later
+						this.modules.remove(i); //Remove module from stack since it is no longer in use, may want to switch to disabled state later
+						i--;
 					}
 				}
 			}
@@ -230,11 +238,63 @@ public class ModuleManager {
 					int indexOfFindModule = this.modules.getIndexOfModule(str);
 					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
 					{
+						this.modules.remove(mod);
+						i--;
 						this.modules.insertAfter(str, mod);
 					}
 					//Like dependencies but do not fail
 				}
 			}
+		}
+		
+		ArrayList<URL> jarUrls = new ArrayList<URL>();
+		for(Module m : this.modules)
+		{
+			try 
+			{
+				jarUrls.add(m.getFile().toURI().toURL());
+			}
+			catch (MalformedURLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		Thread.currentThread().setContextClassLoader(loader);
+		this.loader = new URLClassLoader(jarUrls.toArray(new URL[jarUrls.size()]), ObsidianEngine.getClassLoader());
+		
+		for(int i = 0; i < this.modules.size(); i++)
+		{
+			try 
+			{
+				Module mod = this.modules.get(i);
+				File f = mod.getFile();
+				System.out.println(mod.getName());
+				JarFile jar = new JarFile(f);
+				Enumeration<JarEntry> entries = jar.entries();
+				ArrayList<String> classes = new ArrayList<String>();
+				while(entries.hasMoreElements())
+				{
+					JarEntry entry = entries.nextElement();
+					if(entry.getName().endsWith(".class"))
+					{
+						String entryName = entry.getName().replace("/", ".");
+						entryName = entryName.substring(0, entryName.lastIndexOf("."));
+						classes.add(entryName);
+					}
+				}
+				
+				for(String cl : classes)
+				{
+					this.loader.loadClass(cl);
+				}
+				
+				jar.close();
+			} 
+			catch (IOException | ClassNotFoundException e) 
+			{
+				e.printStackTrace();
+			}
+		
 		}
 	}
 	
@@ -254,9 +314,9 @@ public class ModuleManager {
 				String[] dependencies = m.getDependencies();
 				String[] softDependencies = m.getSoftDependencies();
 
-				URLClassLoader loader = new URLClassLoader(new URL[] {file.toURI().toURL()}, ObsidianEngine.class.getClassLoader());
-				Thread.currentThread().setContextClassLoader(loader);
-				Class<?> cl = loader.loadClass(mainClass);
+			
+				
+				Class<?> cl = this.loader.loadClass(mainClass);
 				Object obj = cl.newInstance();
 				Module module = null;
 				if(obj instanceof Module)
@@ -275,7 +335,7 @@ public class ModuleManager {
 				m = module;
 				module.onModulePreload();
 			}
-			catch (IOException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
+			catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
 			{
 				e.printStackTrace();
 			}
