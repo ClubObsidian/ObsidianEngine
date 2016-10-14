@@ -9,20 +9,20 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
+import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.module.Module;
 import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
-import com.clubobsidian.obsidianengine.snakeyaml.Yaml;
 
 public class ModuleManager {
 
 	private File moduleFolder = new File("modules");
-	private ArrayList<Module> modules = new ArrayList<Module>();
+	private ModuleStack modules = new ModuleStack();
 	
 	//Module format example
 	//name: TestModule
@@ -70,31 +70,7 @@ public class ModuleManager {
 							{
 								entryName = entryName.replace(".class", "");
 							}
-							/*if(entryName.endsWith(".class"))
-							{
-								entryName = entryName.substring(0, entryName.lastIndexOf("."));
-								URLClassLoader loader = new URLClassLoader(new URL[] {f.toURI().toURL()}, ObsidianEngine.class.getClassLoader());
-								Thread.currentThread().setContextClassLoader(loader);
-								Class<?> cl = loader.loadClass(entryName);
-								Object obj = cl.newInstance();
-								if(obj instanceof Module)
-								{
-									Module module = (Module) obj;
-									try 
-									{
-										ModuleManager.setModuleName(module, cl.getSimpleName()); //->To be done
-									} 
-									catch (NoSuchFieldException | SecurityException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) 
-									{
-										e.printStackTrace();
-									}
-									module.onModulePreload();
-									this.modules.add(module);
-								
-								}
-								loader.close();
-								continue;
-							}*/
+						
 							moduleEntries.add(entryName);
 							if(entryName.equals("module.yml"))
 							{
@@ -203,15 +179,69 @@ public class ModuleManager {
 				}
 			}
 		}
-		this.loadModulesRuntime();
+		this.orderModules();
 	}
 
-	private void loadModulesRuntime()
+	private void orderModules()
 	{
-		//Resolve dependencies
-		for(Module m : this.modules)
+		Iterator<Module> iterator = this.modules.iterator();
+		while(iterator.hasNext())
 		{
+			Module mod = iterator.next();
+			String[] loadBefore = mod.getLoadBefore();
+			String[] dependencies = mod.getDependencies();
+			String[] softDependencies = mod.getSoftDependencies();
 			
+			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
+			if(loadBefore.length > 0)
+			{
+				for(String str : loadBefore)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					
+					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
+					{
+						this.modules.insertBefore(str, mod);
+					}
+				}
+			}
+			
+			if(dependencies.length > 0)
+			{
+				for(String str : dependencies)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
+					{
+						this.modules.insertAfter(str, mod);
+					}
+					else if(indexOfFindModule == -1)
+					{
+						ObsidianEngine.getLogger().fatal("Cannot load module " + mod.getName() + " because the dependency " + str + " is not found!");
+						iterator.remove(); //Remove module from stack since it is no longer in use, may want to switch to disabled state later
+					}
+				}
+			}
+			
+			if(softDependencies.length > 0)
+			{
+				for(String str : softDependencies)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
+					{
+						this.modules.insertAfter(str, mod);
+					}
+					//Like dependencies but do not fail
+				}
+			}
+		}
+	}
+	
+	public void preloadModules()
+	{
+		for(Module m : this.modules)
+		{	
 			try
 			{
 				String name = m.getName();
@@ -231,7 +261,6 @@ public class ModuleManager {
 				Module module = null;
 				if(obj instanceof Module)
 				{
-					System.out.println("Is module");
 					module = (Module) obj;
 				}
 				
@@ -244,7 +273,7 @@ public class ModuleManager {
 				ModuleManager.setField(module, "dependencies", dependencies);
 				ModuleManager.setField(module, "softDependencies", softDependencies);
 				m = module;
-				module.onModuleEnable();
+				module.onModulePreload();
 			}
 			catch (IOException | NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
 			{
@@ -253,7 +282,15 @@ public class ModuleManager {
 		}
 	}
 
-	public ArrayList<Module> getModules()
+	public void enableModules()
+	{
+		for(Module m : this.modules)
+		{
+			m.onModuleEnable();
+		}
+	}
+	
+	public ModuleStack getModules()
 	{
 		return this.modules;
 	}

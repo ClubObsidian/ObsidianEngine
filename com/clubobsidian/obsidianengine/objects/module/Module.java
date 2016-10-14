@@ -67,7 +67,7 @@ public class Module
 		}
 		
 		File configFile = new File(moduleFolder.getAbsolutePath(), "config.yml");
-		this.getClass().getResource(".config.yml");
+		this.getClass().getResourceAsStream("/config.yml");
 	}
 	
 	public String getName()

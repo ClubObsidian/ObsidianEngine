@@ -1,9 +1,8 @@
 package com.clubobsidian.obsidianengine;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
+import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.managers.JarManager;
 import com.clubobsidian.obsidianengine.objects.managers.ModuleManager;
 import com.clubobsidian.obsidianengine.objects.module.Module;
@@ -29,8 +28,9 @@ public class ObsidianEngine {
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.loadModules();
+		ObsidianEngine.moduleManager.preloadModules();
 		ObsidianEngine.jarManager.loadJar(args);
-		
+		ObsidianEngine.moduleManager.enableModules();	
 	}
 	
 	private static void setupEngineModule()
@@ -57,7 +57,7 @@ public class ObsidianEngine {
 		return ObsidianEngine.class.getClassLoader();
 	}
 
-	public static ArrayList<Module> getModules()
+	public static ModuleStack getModules()
 	{
 		return ObsidianEngine.moduleManager.getModules();
 	}
