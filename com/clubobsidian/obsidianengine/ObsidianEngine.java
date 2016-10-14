@@ -1,7 +1,9 @@
 package com.clubobsidian.obsidianengine;
 
 import java.lang.reflect.Field;
+import java.net.URL;
 
+import com.clubobsidian.obsidianengine.objects.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.managers.JarManager;
 import com.clubobsidian.obsidianengine.objects.managers.ModuleManager;
@@ -14,6 +16,7 @@ public class ObsidianEngine {
 	private static Module engineModule = new Module();
 	private static ModuleManager moduleManager = new ModuleManager();
 	private static JarManager jarManager = new JarManager();
+	private static BetterURLClassLoader loader;
 	
 	public static void main(String[] args)
 	{
@@ -25,6 +28,7 @@ public class ObsidianEngine {
 		//FileConfiguration file = FileConfiguration.loadFile(new File("test.yml"));
 		//System.out.println(new File("test.yml").getAbsolutePath());
 		
+		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.loadModules();
@@ -52,9 +56,15 @@ public class ObsidianEngine {
 		return ObsidianEngine.engineModule.getLogger();
 	}
 
-	public static ClassLoader getClassLoader()
+	/*public static ClassLoader getClassLoader()
 	{
 		return ObsidianEngine.class.getClassLoader();
+	}*/
+	
+	
+	public static BetterURLClassLoader getClassLoader()
+	{
+		return ObsidianEngine.loader;
 	}
 
 	public static ModuleStack getModules()

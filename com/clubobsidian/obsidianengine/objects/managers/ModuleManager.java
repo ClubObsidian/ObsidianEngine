@@ -24,7 +24,6 @@ public class ModuleManager {
 
 	private File moduleFolder = new File("modules");
 	private ModuleStack modules = new ModuleStack();
-	private URLClassLoader loader = null;
 	
 	//Module format example
 	//name: TestModule
@@ -247,54 +246,17 @@ public class ModuleManager {
 			}
 		}
 		
-		ArrayList<URL> jarUrls = new ArrayList<URL>();
+		
 		for(Module m : this.modules)
 		{
 			try 
 			{
-				jarUrls.add(m.getFile().toURI().toURL());
+				ObsidianEngine.getClassLoader().addURL(m.getFile().toURI().toURL());
 			}
 			catch (MalformedURLException e) 
 			{
 				e.printStackTrace();
 			}
-		}
-		Thread.currentThread().setContextClassLoader(loader);
-		this.loader = new URLClassLoader(jarUrls.toArray(new URL[jarUrls.size()]), ObsidianEngine.getClassLoader());
-		
-		for(int i = 0; i < this.modules.size(); i++)
-		{
-			try 
-			{
-				Module mod = this.modules.get(i);
-				File f = mod.getFile();
-				System.out.println(mod.getName());
-				JarFile jar = new JarFile(f);
-				Enumeration<JarEntry> entries = jar.entries();
-				ArrayList<String> classes = new ArrayList<String>();
-				while(entries.hasMoreElements())
-				{
-					JarEntry entry = entries.nextElement();
-					if(entry.getName().endsWith(".class"))
-					{
-						String entryName = entry.getName().replace("/", ".");
-						entryName = entryName.substring(0, entryName.lastIndexOf("."));
-						classes.add(entryName);
-					}
-				}
-				
-				for(String cl : classes)
-				{
-					this.loader.loadClass(cl);
-				}
-				
-				jar.close();
-			} 
-			catch (IOException | ClassNotFoundException e) 
-			{
-				e.printStackTrace();
-			}
-		
 		}
 	}
 	
@@ -316,7 +278,7 @@ public class ModuleManager {
 
 			
 				
-				Class<?> cl = this.loader.loadClass(mainClass);
+				Class<?> cl = ObsidianEngine.getClassLoader().loadClass(mainClass);
 				Object obj = cl.newInstance();
 				Module module = null;
 				if(obj instanceof Module)

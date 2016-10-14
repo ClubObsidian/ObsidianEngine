@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.jar.JarInputStream;
 
@@ -71,9 +69,9 @@ public class JarManager {
 
 		try 
 		{
-			URLClassLoader jarLoader = new URLClassLoader(new URL[] {jar.toURI().toURL()}, ObsidianEngine.getClassLoader());
-			Thread.currentThread().setContextClassLoader(jarLoader);
-			final Class<?> theClass = Class.forName(this.getJarMain(jar), true, jarLoader);
+			Thread.currentThread().setContextClassLoader(ObsidianEngine.getClassLoader());
+			ObsidianEngine.getClassLoader().addURL(jar.toURI().toURL());
+			final Class<?> theClass = Class.forName(this.getJarMain(jar), true, ObsidianEngine.getClassLoader());
 			final Method m = theClass.getMethod("main", String[].class);
 			m.invoke(null, new Object[] {args});
 		} 
