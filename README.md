@@ -4,4 +4,6 @@ ObsidianEngine is a modular based system to modify jars on runtime. ObsidianEngi
 
 # FAQ
 * How do I use this?
- * The information will be documented on the project's wiki.
+ * Information when ready will be posted on the project wiki.
+* It doesn't work?!?!!
+ * The software isn't done and none of the code is documented, if you want to help you can open an issue and ask a question.
