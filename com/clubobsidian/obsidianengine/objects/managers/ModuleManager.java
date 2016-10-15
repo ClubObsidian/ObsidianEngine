@@ -6,11 +6,8 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -251,7 +248,7 @@ public class ModuleManager {
 		{
 			try 
 			{
-				ObsidianEngine.getClassLoader().addURL(m.getFile().toURI().toURL());
+				ObsidianEngine.getClassLoader().addURL(m.getJarFile().toURI().toURL());
 			}
 			catch (MalformedURLException e) 
 			{
@@ -268,7 +265,7 @@ public class ModuleManager {
 			{
 				String name = m.getName();
 				System.out.println(name);
-				File file = m.getFile();
+				File file = m.getJarFile();
 				String mainClass = m.getMain();
 				String version = m.getVersion();
 				String[] authors = m.getAuthors();
@@ -276,8 +273,6 @@ public class ModuleManager {
 				String[] dependencies = m.getDependencies();
 				String[] softDependencies = m.getSoftDependencies();
 
-			
-				
 				Class<?> cl = ObsidianEngine.getClassLoader().loadClass(mainClass);
 				Object obj = cl.newInstance();
 				Module module = null;
@@ -295,7 +290,7 @@ public class ModuleManager {
 				ModuleManager.setField(module, "dependencies", dependencies);
 				ModuleManager.setField(module, "softDependencies", softDependencies);
 				m = module;
-				module.onModulePreload();
+				module.onLoad();
 			}
 			catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
 			{
@@ -308,7 +303,7 @@ public class ModuleManager {
 	{
 		for(Module m : this.modules)
 		{
-			m.onModuleEnable();
+			m.onEnable();
 		}
 	}
 	

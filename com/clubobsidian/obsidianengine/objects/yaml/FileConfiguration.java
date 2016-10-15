@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.clubobsidian.obsidianengine.snakeyaml.Yaml;
 
@@ -166,6 +167,11 @@ public class FileConfiguration {
 	public void set(String key, Object object)
 	{
 		this.values.put(key, object);
+	}
+	
+	public Set<String> getKeys()
+	{
+		return new CloneWrapper<Set<String>>().clone(this.values.keySet());
 	}
 	
 	private class CloneWrapper<T>

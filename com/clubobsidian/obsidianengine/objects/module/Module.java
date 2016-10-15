@@ -1,7 +1,11 @@
 package com.clubobsidian.obsidianengine.objects.module;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 
 import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
 
@@ -18,17 +22,17 @@ public class Module
 	private String[] softDependencies;
 	private static File moduleFolder = new File("modules");
 	
-	public void onModulePreload()
+	public void onLoad()
 	{
 		
 	}
 	
-	public void onModuleEnable() 
+	public void onEnable() 
 	{
 		
 	}
 
-	public void onModuleDisable() 
+	public void onDisable() 
 	{
 		
 	}
@@ -46,7 +50,7 @@ public class Module
 		return FileConfiguration.loadFile(new File(Module.moduleFolder.getAbsoluteFile(), this.name + File.separatorChar + "config.yml"));
 	}
 	
-	public void saveDefaultConfig()
+	public void saveDefaultConfig(boolean replace)
 	{
 		if(!Module.moduleFolder.exists())
 		{
@@ -59,15 +63,41 @@ public class Module
 				e.printStackTrace();
 			}
 		}
-		
+
 		File moduleFolder = new File(Module.moduleFolder.getAbsolutePath(), this.name);
 		if(!moduleFolder.exists())
 		{
 			moduleFolder.mkdir();
 		}
-		
+
 		File configFile = new File(moduleFolder.getAbsolutePath(), "config.yml");
-		this.getClass().getResourceAsStream("/config.yml");
+		if(!configFile.exists() || replace) //If the config file doesn't exist or if replace is true
+		{
+			if(configFile.exists())
+				configFile.delete();
+			
+			InputStream stream = this.getClass().getResourceAsStream("/config.yml");
+			System.out.println(stream == null);
+			try 
+			{
+				Files.copy(stream, configFile.toPath());
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				try 
+				{
+					stream.close();
+				} 
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public String getName()
@@ -75,7 +105,7 @@ public class Module
 		return this.name;
 	}
 	
-	public File getFile()
+	public File getJarFile()
 	{
 		return this.file;
 	}

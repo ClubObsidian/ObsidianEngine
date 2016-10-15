@@ -13,7 +13,7 @@ import com.clubobsidian.obsidianengine.ObsidianEngine;
 
 public class JarManager {
 	
-	private boolean standalone = false;
+	private boolean standalone = true;
 	
 	private String getJarMain(final File jar)
 	{
@@ -35,27 +35,23 @@ public class JarManager {
 		
 		return main;
 	}
-	
+
 	public void loadJar(final String[] args)
 	{
-		boolean standalone = true;
 		if(args.length > 0)
 		{
 			if(args[0].toLowerCase().endsWith(".jar"))
 			{
-				standalone = false;
+				this.standalone = false;
 				ObsidianEngine.getLogger().info("Arguments found for obsidian engine, attempting to start.");
 				File jar = new File(args[0]);
 				this.loadJarViaLoader(jar, Arrays.copyOfRange(args, 1, args.length));	
+				return;
 			}
 		}
-		
-		if(standalone)
-		{
-			ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
-			this.standalone = true;
-			//Keep thread alive
-		}
+
+		ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
+		this.standalone = true;
 	}
 
 	public boolean getStandalone()
