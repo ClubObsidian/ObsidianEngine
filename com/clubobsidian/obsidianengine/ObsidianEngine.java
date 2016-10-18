@@ -41,9 +41,13 @@ public class ObsidianEngine {
 	{
 		try 
 		{
-			Field field = Module.class.getDeclaredField("name");
-			field.setAccessible(true);
-			field.set(ObsidianEngine.engineModule, "ObsidianEngine");
+			Field name = Module.class.getDeclaredField("name");
+			name.setAccessible(true);
+			name.set(ObsidianEngine.engineModule, "ObsidianEngine");
+		
+			Field logger = Module.class.getDeclaredField("logger");
+			logger.setAccessible(true);
+			logger.set(ObsidianEngine.engineModule, new ModuleLogger(ObsidianEngine.engineModule));
 		} 
 		catch (NoSuchFieldException | SecurityException| IllegalArgumentException | IllegalAccessException e) 
 		{
@@ -55,12 +59,6 @@ public class ObsidianEngine {
 	{
 		return ObsidianEngine.engineModule.getLogger();
 	}
-
-	/*public static ClassLoader getClassLoader()
-	{
-		return ObsidianEngine.class.getClassLoader();
-	}*/
-	
 	
 	public static BetterURLClassLoader getClassLoader()
 	{

@@ -1,10 +1,8 @@
 package com.clubobsidian.obsidianengine.objects.module;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 
 import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
@@ -35,19 +33,6 @@ public class Module
 	public void onDisable() 
 	{
 		
-	}
-	
-	public ModuleLogger getLogger()
-	{
-		if(this.logger == null)
-			this.logger = new ModuleLogger(this);
-		
-		return this.logger;
-	}
-	
-	public FileConfiguration getConfig()
-	{
-		return FileConfiguration.loadFile(new File(Module.moduleFolder.getAbsoluteFile(), this.name + File.separatorChar + "config.yml"));
 	}
 	
 	public void saveDefaultConfig(boolean replace)
@@ -98,6 +83,16 @@ public class Module
 				}
 			}
 		}
+	}
+	
+	public ModuleLogger getLogger()
+	{		
+		return this.logger;
+	}
+	
+	public FileConfiguration getConfig()
+	{
+		return FileConfiguration.loadFile(new File(Module.moduleFolder.getAbsoluteFile(), this.name + File.separatorChar + "config.yml"));
 	}
 	
 	public String getName()

@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.module.Module;
+import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
 import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
 
 public class ModuleManager {
@@ -151,6 +152,7 @@ public class ModuleManager {
 								softDependencies = new String[0];
 							}
 							
+							
 							Module module = new Module();
 							ModuleManager.setField(module, "name", name);
 							ModuleManager.setField(module, "file", f);
@@ -160,6 +162,9 @@ public class ModuleManager {
 							ModuleManager.setField(module, "loadBefore", loadBefore);
 							ModuleManager.setField(module, "dependencies", dependencies);
 							ModuleManager.setField(module, "softDependencies", softDependencies);
+							
+							ModuleLogger logger = new ModuleLogger(module);
+							ModuleManager.setField(module, "logger", logger);
 							this.modules.add(module);
 							moduleStream.close();
 						}
@@ -272,6 +277,7 @@ public class ModuleManager {
 				String[] loadBefore = m.getLoadBefore();
 				String[] dependencies = m.getDependencies();
 				String[] softDependencies = m.getSoftDependencies();
+				ModuleLogger logger = m.getLogger();
 
 				Class<?> cl = ObsidianEngine.getClassLoader().loadClass(mainClass);
 				Object obj = cl.newInstance();
@@ -289,6 +295,8 @@ public class ModuleManager {
 				ModuleManager.setField(module, "loadBefore", loadBefore);
 				ModuleManager.setField(module, "dependencies", dependencies);
 				ModuleManager.setField(module, "softDependencies", softDependencies);
+				ModuleManager.setField(module, "logger", logger);
+				
 				m = module;
 				module.onLoad();
 			}
