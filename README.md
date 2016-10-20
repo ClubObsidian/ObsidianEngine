@@ -9,3 +9,28 @@ ObsidianEngine is a modular based system to modify jars on runtime. ObsidianEngi
  * The software isn't done and none of the code is documented, if you want to help you can open an issue and ask a question.
 * When will this be done?
  * I really couldn't tell you, its currently in a working state but hasn't been tested in production. When the code will be finalized and the api will be mature is yet to be determined.
+
+# License
+Obsidian Engine is licensed under the permissive [MIT license.](LICENSE)
+
+>The MIT License (MIT)
+
+>Copyright (c) virustotalop 2016 & contributors
+
+>Permission is hereby granted, free of charge, to any person obtaining a copy
+>of this software and associated documentation files (the "Software"), to deal
+>in the Software without restriction, including without limitation the rights
+>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+>copies of the Software, and to permit persons to whom the Software is
+>furnished to do so, subject to the following conditions:
+
+>The above copyright notice and this permission notice shall be included in all
+>copies or substantial portions of the Software.
+
+>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ >FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+>SOFTWARE.
