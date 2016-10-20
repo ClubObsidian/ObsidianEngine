@@ -3,6 +3,7 @@ package com.clubobsidian.obsidianengine.objects.managers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -49,7 +50,7 @@ public class JarManager {
 				return;
 			}
 		}
-
+		
 		ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
 		this.standalone = true;
 	}
