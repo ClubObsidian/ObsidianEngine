@@ -3,6 +3,8 @@ package com.clubobsidian.obsidianengine;
 import java.lang.reflect.Field;
 import java.net.URL;
 
+import javax.swing.JOptionPane;
+
 import com.clubobsidian.obsidianengine.objects.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.managers.JarManager;
@@ -34,7 +36,7 @@ public class ObsidianEngine {
 		ObsidianEngine.moduleManager.loadModules();
 		ObsidianEngine.moduleManager.preloadModules();
 		ObsidianEngine.jarManager.loadJar(args);
-		ObsidianEngine.moduleManager.enableModules();	
+		ObsidianEngine.moduleManager.enableModules();
 	}
 	
 	private static void setupEngineModule()

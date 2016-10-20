@@ -12,6 +12,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
+import javax.swing.JOptionPane;
+
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.module.Module;
@@ -39,7 +41,7 @@ public class ModuleManager {
 			this.moduleFolder.mkdir();
 		}
 
-		for(File f : moduleFolder.listFiles())
+		for(File f : this.moduleFolder.listFiles())
 		{
 			if(f.getName() != null)
 			{
@@ -187,15 +189,6 @@ public class ModuleManager {
 
 	private void orderModules()
 	{
-		while(!this.modulesOrdered())
-		{
-			this.tryToOrderModules();
-		}
-		
-		for(Module m: this.modules)
-		{
-			System.out.println("Load order: " + m.getName());
-		}
 		
 		for(Module m : this.modules)
 		{
@@ -208,6 +201,16 @@ public class ModuleManager {
 				e.printStackTrace();
 			}
 		}
+		while(!this.modulesOrdered())
+		{
+			this.tryToOrderModules();
+		}
+		
+		for(Module m: this.modules)
+		{
+			System.out.println("Load order: " + m.getName());
+		}
+		
 	}
 	
 	private boolean modulesOrdered()
@@ -215,11 +218,9 @@ public class ModuleManager {
 		for(int i = 0; i < this.modules.size(); i++)
 		{
 			Module mod = this.modules.get(i);
-			System.out.println("Mod size: " + this.modules.size());
 			String[] loadBefore = mod.getLoadBefore();
 			String[] dependencies = mod.getDependencies();
 			String[] softDependencies = mod.getSoftDependencies();
-			System.out.println(mod.getName());
 			
 			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
 			if(loadBefore.length > 0)
@@ -272,6 +273,7 @@ public class ModuleManager {
 		for(int i = 0; i < this.modules.size(); i++)
 		{
 			Module mod = this.modules.get(i);
+			mod.onEnable();
 			System.out.println("Mod size: " + this.modules.size());
 			String[] loadBefore = mod.getLoadBefore();
 			String[] dependencies = mod.getDependencies();
@@ -349,12 +351,7 @@ public class ModuleManager {
 				ModuleLogger logger = m.getLogger();
 
 				Class<?> cl = ObsidianEngine.getClassLoader().loadClass(mainClass);
-				Object obj = cl.newInstance();
-				Module module = null;
-				if(obj instanceof Module)
-				{
-					module = (Module) obj;
-				}
+				Module module = (Module) cl.newInstance();
 				
 				ModuleManager.setField(module, "name", name);
 				ModuleManager.setField(module, "file", file);
@@ -366,7 +363,7 @@ public class ModuleManager {
 				ModuleManager.setField(module, "softDependencies", softDependencies);
 				ModuleManager.setField(module, "logger", logger);
 				
-				m = module;
+				this.modules.set(this.modules.getIndexOfModule(name), module);
 				module.onLoad();
 			}
 			catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
@@ -380,6 +377,7 @@ public class ModuleManager {
 	{
 		for(Module m : this.modules)
 		{
+			System.out.println("Enabling " + m.getName() + " with main class " + m.getMain());
 			m.onEnable();
 		}
 	}

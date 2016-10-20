@@ -67,7 +67,7 @@ public class JarManager {
 		{
 			Thread.currentThread().setContextClassLoader(ObsidianEngine.getClassLoader());
 			ObsidianEngine.getClassLoader().addURL(jar.toURI().toURL());
-			final Class<?> theClass = Class.forName(this.getJarMain(jar), true, ObsidianEngine.getClassLoader());
+			final Class<?> theClass = ObsidianEngine.getClassLoader().loadClass((this.getJarMain(jar)));
 			final Method m = theClass.getMethod("main", String[].class);
 			m.invoke(null, new Object[] {args});
 		} 
