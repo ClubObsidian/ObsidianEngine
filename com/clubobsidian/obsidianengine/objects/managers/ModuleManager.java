@@ -187,7 +187,88 @@ public class ModuleManager {
 
 	private void orderModules()
 	{
+		while(!this.modulesOrdered())
+		{
+			this.tryToOrderModules();
+		}
 		
+		for(Module m: this.modules)
+		{
+			System.out.println("Load order: " + m.getName());
+		}
+		
+		for(Module m : this.modules)
+		{
+			try 
+			{
+				ObsidianEngine.getClassLoader().addURL(m.getJarFile().toURI().toURL());
+			}
+			catch (MalformedURLException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private boolean modulesOrdered()
+	{
+		for(int i = 0; i < this.modules.size(); i++)
+		{
+			Module mod = this.modules.get(i);
+			System.out.println("Mod size: " + this.modules.size());
+			String[] loadBefore = mod.getLoadBefore();
+			String[] dependencies = mod.getDependencies();
+			String[] softDependencies = mod.getSoftDependencies();
+			System.out.println(mod.getName());
+			
+			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
+			if(loadBefore.length > 0)
+			{
+				for(String str : loadBefore)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					
+					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
+					{
+						return false;
+					}
+				}
+			}
+			
+			if(dependencies.length > 0)
+			{
+				for(String str : dependencies)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
+					{
+						return false;
+					}
+					else if(indexOfFindModule == -1)
+					{
+						return false;
+					}
+				}
+			}
+			
+			if(softDependencies.length > 0)
+			{
+				for(String str : softDependencies)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
+					{
+						return false;
+					}
+				}
+			}
+			
+		}
+		return true;
+	}
+	
+	private void tryToOrderModules()
+	{
 		for(int i = 0; i < this.modules.size(); i++)
 		{
 			Module mod = this.modules.get(i);
@@ -246,19 +327,7 @@ public class ModuleManager {
 					//Like dependencies but do not fail
 				}
 			}
-		}
-		
-		
-		for(Module m : this.modules)
-		{
-			try 
-			{
-				ObsidianEngine.getClassLoader().addURL(m.getJarFile().toURI().toURL());
-			}
-			catch (MalformedURLException e) 
-			{
-				e.printStackTrace();
-			}
+			
 		}
 	}
 	
