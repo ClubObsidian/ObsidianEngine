@@ -27,7 +27,7 @@ public class Module
 	
 	public void onEnable() 
 	{
-		System.out.println("Default on enable");
+		
 	}
 
 	public void onDisable() 

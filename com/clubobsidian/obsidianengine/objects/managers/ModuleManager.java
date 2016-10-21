@@ -12,8 +12,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import javax.swing.JOptionPane;
-
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.module.Module;

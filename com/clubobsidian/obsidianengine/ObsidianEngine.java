@@ -42,10 +42,9 @@ public class ObsidianEngine {
 		if(ObsidianEngine.jarManager.getStandalone())
 		{
 			ObsidianEngine.mainThread = new MainThread();
-			System.out.println("MainThread: " + mainThread.toString());
 			ObsidianEngine.mainThread.setDaemon(false);
 			ObsidianEngine.mainThread.addTask(new ReadConsoleTask());
-			ObsidianEngine.mainThread.run();
+			ObsidianEngine.mainThread.start();
 		}
 		
 	}
