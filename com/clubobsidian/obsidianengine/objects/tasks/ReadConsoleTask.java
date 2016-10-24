@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.clubobsidian.obsidianengine.objects.Task;
-
 public class ReadConsoleTask implements Task {
 	
 	@Override

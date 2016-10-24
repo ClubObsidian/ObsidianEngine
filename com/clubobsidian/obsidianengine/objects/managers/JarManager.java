@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.jar.JarInputStream;
 
@@ -36,7 +37,7 @@ public class JarManager {
 		return main;
 	}
 
-	public void loadJar(final String[] args)
+	public void loadJar(final String[] args, ArrayList<String> injectBefore)
 	{
 		if(args.length > 0)
 		{

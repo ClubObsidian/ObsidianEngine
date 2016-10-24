@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.objects.classloader;
 
 import java.net.URL;
 import java.net.URLClassLoader;

@@ -1,8 +1,6 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.objects.module;
 
 import java.util.Stack;
-
-import com.clubobsidian.obsidianengine.objects.module.Module;
 
 public class ModuleStack extends Stack<Module> {
 

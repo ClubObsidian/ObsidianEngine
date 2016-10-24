@@ -1,6 +1,6 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.listener;
 
-import com.clubobsidian.obsidianengine.annotations.EventHandler;
+import com.clubobsidian.obsidianengine.event.EventHandler;
 import com.clubobsidian.obsidianengine.objects.events.TestEvent;
 
 public class TestListener implements Listener {
@@ -8,6 +8,6 @@ public class TestListener implements Listener {
 	@EventHandler
 	public void test(TestEvent e)
 	{
-		System.out.println("asdf");
+		//System.out.println("test");
 	}
 }

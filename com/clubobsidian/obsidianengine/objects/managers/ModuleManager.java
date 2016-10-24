@@ -13,9 +13,9 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.objects.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.module.Module;
 import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
+import com.clubobsidian.obsidianengine.objects.module.ModuleStack;
 import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
 
 public class ModuleManager {
@@ -363,6 +363,7 @@ public class ModuleManager {
 				
 				this.modules.set(this.modules.getIndexOfModule(name), module);
 				module.onLoad();
+				
 			}
 			catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException | InstantiationException e) 
 			{

@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.objects.tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;

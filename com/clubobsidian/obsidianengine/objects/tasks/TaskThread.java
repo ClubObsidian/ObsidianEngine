@@ -1,8 +1,8 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.objects.tasks;
 
 import java.util.ArrayList;
 
-public class MainThread extends Thread {
+public class TaskThread extends Thread {
 	
 	private ArrayList<Task> tasks = new ArrayList<Task>();
 	

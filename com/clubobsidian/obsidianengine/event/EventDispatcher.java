@@ -1,15 +1,16 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.event;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.clubobsidian.obsidianengine.annotations.EventHandler;
+import com.clubobsidian.obsidianengine.ObsidianEngine;
+import com.clubobsidian.obsidianengine.listener.Listener;
 
 public class EventDispatcher {
 
 	public void dispatchEvent(final Event event)
 	{
-		for (Listener handler : EventRegistryHandler.getHandlers()) 
+		for (Listener handler : ObsidianEngine.getEventRegistry().getHandlers()) 
 		{
 			Method[] methods = handler.getClass().getMethods();
 			for (int i = 0; i < methods.length; ++i) 
@@ -17,11 +18,11 @@ public class EventDispatcher {
 				EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
 				if (eventHandler != null) 
 				{
-					Class<?>[] methodParams = methods[i].getParameterTypes();
+					Class<?>[] params = methods[i].getParameterTypes();
 
-					if (methodParams.length >= 1)
+					if (params.length == 1)
 					{
-						if (event.getClass().equals(methodParams[0]))
+						if (event.getClass().equals(params[0]))
 						{
 							try 
 							{
