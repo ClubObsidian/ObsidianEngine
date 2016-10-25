@@ -1,6 +1,6 @@
 # ObsidianEngine
 
-ObsidianEngine is a modular based system to modify jars on runtime. ObsidianEngine can be used to inject class files before the main jar is loaded or after the jar is loaded. ObsidianEngine can also be used for asm bytecode editing or anything else you can really thing of. The module system is inspired by the way that Bukkit loads plugins. ObsidianEngine is an upgraded version of my [JarPatcher project](http://github.com/virustotalop/JarPatcher).
+ObsidianEngine is a modular based system to modify jars and more on runtime. ObsidianEngine can be used to inject class files for overriding classes in the main jar file. ObsidianEngine can also be used for asm bytecode editing or anything else you can really thing of. The module system is inspired by the way that Bukkit loads plugins. ObsidianEngine is inspired by my [JarPatcher project](http://github.com/virustotalop/JarPatcher). ObsidianEngine can also run in standalone mode to create your own platforms for game servers, providing administration to tools written in Java and much more.
 
 # FAQ
 * How do I use this?
@@ -9,6 +9,7 @@ ObsidianEngine is a modular based system to modify jars on runtime. ObsidianEngi
  * The software isn't done and none of the code is documented, if you want to help you can open an issue and ask a question.
 * When will this be done?
  * I really couldn't tell you, its currently in a working state but hasn't been tested in production. When the code will be finalized and the api will be mature is yet to be determined.
+
 
 # License
 Obsidian Engine is licensed under the permissive [MIT license.](LICENSE)
