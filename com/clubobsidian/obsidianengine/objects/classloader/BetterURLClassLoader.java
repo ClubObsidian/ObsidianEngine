@@ -15,4 +15,10 @@ public class BetterURLClassLoader extends URLClassLoader {
 	{
 		super.addURL(url);
 	}
+	
+	@Override
+	public Class<?> findClass(String name) throws ClassNotFoundException
+	{
+		return super.findClass(name);
+	}
 }

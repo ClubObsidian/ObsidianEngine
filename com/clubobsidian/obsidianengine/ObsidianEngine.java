@@ -2,7 +2,6 @@ package com.clubobsidian.obsidianengine;
 
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.ArrayList;
 
 import com.clubobsidian.obsidianengine.event.EventDispatcher;
 import com.clubobsidian.obsidianengine.event.EventRegistry;
@@ -26,7 +25,6 @@ public class ObsidianEngine {
 	private static TaskThread taskThread;
 	private static EventDispatcher eventDispatcher;
 	private static EventRegistry eventRegistry;
-	private static ArrayList<String> injectBefore = new ArrayList<String>();
 	
 	public static void main(final String[] args)
 	{
@@ -39,20 +37,22 @@ public class ObsidianEngine {
 		//System.out.println(new File("test.yml").getAbsolutePath());
 
 		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());
+		
+		
 		ObsidianEngine.eventRegistry = new EventRegistry();
 		ObsidianEngine.eventDispatcher = new EventDispatcher();
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
+		ObsidianEngine.moduleManager.preLoadModules();
+		ObsidianEngine.jarManager.checkStandAlone(args);
 		ObsidianEngine.moduleManager.loadModules();
-		ObsidianEngine.moduleManager.preloadModules();
-		ObsidianEngine.jarManager.loadJar(args, injectBefore);
+		ObsidianEngine.jarManager.loadJar(args);
 		ObsidianEngine.moduleManager.enableModules();
 
-		
+		ObsidianEngine.taskThread = new TaskThread();
 		if(ObsidianEngine.jarManager.getStandalone())
 		{
 			new ConsoleThread().start();
-			ObsidianEngine.taskThread = new TaskThread();
 			ObsidianEngine.taskThread.setDaemon(false);
 			//ObsidianEngine.taskThread.addTask(new EventTask());
 			//ObsidianEngine.eventRegistry.register(new TestListener());
@@ -106,14 +106,6 @@ public class ObsidianEngine {
 	
 	public static void tryToinjectClass(String clazz)
 	{
-		/*try 
-		{
-			ObsidianEngine.getClassLoader().loadClass(clazz);
-		} 
-		catch (NoClassDefFoundError | ClassNotFoundException e) 
-		{
-			ObsidianEngine.injectBefore.add(clazz);
-			ObsidianEngine.getLogger().fatal("Class loading has failed for " + clazz + " trying to inject on runtime!");
-		}*/
+		//TODO
 	}
 }

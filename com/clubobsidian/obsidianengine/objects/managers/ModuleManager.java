@@ -32,7 +32,7 @@ public class ModuleManager {
 	//depend: [PaperModule]
 	//softdepend: [OtherTestModule]
 	
-	public void loadModules()
+	public void preLoadModules()
 	{
 		if(!this.moduleFolder.exists())
 		{
@@ -331,7 +331,7 @@ public class ModuleManager {
 		}
 	}
 	
-	public void preloadModules()
+	public void loadModules()
 	{
 		for(Module m : this.modules)
 		{	

@@ -37,22 +37,38 @@ public class JarManager {
 		return main;
 	}
 
-	public void loadJar(final String[] args, ArrayList<String> injectBefore)
+	public void checkStandAlone(final String[] args)
 	{
 		if(args.length > 0)
 		{
 			if(args[0].toLowerCase().endsWith(".jar"))
 			{
 				this.standalone = false;
-				ObsidianEngine.getLogger().info("Arguments found for obsidian engine, attempting to start.");
 				File jar = new File(args[0]);
-				this.loadJarViaLoader(jar, Arrays.copyOfRange(args, 1, args.length));	
+				Thread.currentThread().setContextClassLoader(ObsidianEngine.getClassLoader());
+				try 
+				{
+					ObsidianEngine.getClassLoader().addURL(jar.toURI().toURL());
+				} 
+				catch (MalformedURLException e) 
+				{
+					e.printStackTrace();
+				}
 				return;
 			}
 		}
-		
-		ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
 		this.standalone = true;
+		ObsidianEngine.getLogger().info("No main jar found to target, enabling ObsidianEngine in standalone mode.");
+	}
+	
+	public void loadJar(final String[] args)
+	{
+		if(!this.standalone)
+		{
+			File jar = new File(args[0]);
+			this.loadJarViaLoader(jar, Arrays.copyOfRange(args, 1, args.length));	
+			return;
+		}
 	}
 
 	public boolean getStandalone()
@@ -66,13 +82,11 @@ public class JarManager {
 
 		try 
 		{
-			Thread.currentThread().setContextClassLoader(ObsidianEngine.getClassLoader());
-			ObsidianEngine.getClassLoader().addURL(jar.toURI().toURL());
 			final Class<?> theClass = ObsidianEngine.getClassLoader().loadClass((this.getJarMain(jar)));
 			final Method m = theClass.getMethod("main", String[].class);
 			m.invoke(null, new Object[] {args});
 		} 
-		catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
 		{
 			ObsidianEngine.getLogger().info("Could not load jar, stopping...");
 			e.printStackTrace();
