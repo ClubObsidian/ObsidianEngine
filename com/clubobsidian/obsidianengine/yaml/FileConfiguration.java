@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects.yaml;
+package com.clubobsidian.obsidianengine.yaml;
 
 import java.io.File;
 import java.io.FileInputStream;

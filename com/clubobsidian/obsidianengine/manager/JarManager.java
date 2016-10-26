@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects.managers;
+package com.clubobsidian.obsidianengine.manager;
 
 import java.io.File;
 import java.io.FileInputStream;

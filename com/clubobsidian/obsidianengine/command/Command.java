@@ -1,6 +1,6 @@
 package com.clubobsidian.obsidianengine.command;
 
-import com.clubobsidian.obsidianengine.objects.Sender;
+import com.clubobsidian.obsidianengine.user.User;
 
 public class Command {
 
@@ -11,7 +11,7 @@ public class Command {
 		return this.name;
 	}
 	
-	public boolean canExecuteCommand(Sender sender)
+	public boolean canExecuteCommand(User sender)
 	{
 		if(sender.executableCommands().contains("*"))
 		{

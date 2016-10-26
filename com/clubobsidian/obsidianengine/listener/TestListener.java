@@ -1,7 +1,7 @@
 package com.clubobsidian.obsidianengine.listener;
 
 import com.clubobsidian.obsidianengine.event.EventHandler;
-import com.clubobsidian.obsidianengine.objects.events.TestEvent;
+import com.clubobsidian.obsidianengine.event.TestEvent;
 
 public class TestListener implements Listener {
 	

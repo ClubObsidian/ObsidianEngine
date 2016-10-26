@@ -3,17 +3,17 @@ package com.clubobsidian.obsidianengine;
 import java.lang.reflect.Field;
 import java.net.URL;
 
+import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.event.EventDispatcher;
 import com.clubobsidian.obsidianengine.event.EventRegistry;
-import com.clubobsidian.obsidianengine.objects.classloader.BetterURLClassLoader;
-import com.clubobsidian.obsidianengine.objects.managers.JarManager;
-import com.clubobsidian.obsidianengine.objects.managers.ModuleManager;
-import com.clubobsidian.obsidianengine.objects.module.Module;
-import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
-import com.clubobsidian.obsidianengine.objects.module.ModuleStack;
-import com.clubobsidian.obsidianengine.objects.tasks.ConsoleThread;
-import com.clubobsidian.obsidianengine.objects.tasks.EventTask;
-import com.clubobsidian.obsidianengine.objects.tasks.TaskThread;
+import com.clubobsidian.obsidianengine.manager.JarManager;
+import com.clubobsidian.obsidianengine.manager.ModuleManager;
+import com.clubobsidian.obsidianengine.module.Module;
+import com.clubobsidian.obsidianengine.module.ModuleLogger;
+import com.clubobsidian.obsidianengine.module.ModuleStack;
+import com.clubobsidian.obsidianengine.task.ConsoleThread;
+import com.clubobsidian.obsidianengine.task.EventTask;
+import com.clubobsidian.obsidianengine.task.TaskThread;
 
 
 public class ObsidianEngine {

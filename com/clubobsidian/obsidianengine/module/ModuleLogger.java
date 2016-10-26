@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects.module;
+package com.clubobsidian.obsidianengine.module;
 
 import com.clubobsidian.obsidianengine.apachecommons.logging.impl.SimpleLog;
 

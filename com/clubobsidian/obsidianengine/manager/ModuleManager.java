@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects.managers;
+package com.clubobsidian.obsidianengine.manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.objects.module.Module;
-import com.clubobsidian.obsidianengine.objects.module.ModuleLogger;
-import com.clubobsidian.obsidianengine.objects.module.ModuleStack;
-import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
+import com.clubobsidian.obsidianengine.module.Module;
+import com.clubobsidian.obsidianengine.module.ModuleLogger;
+import com.clubobsidian.obsidianengine.module.ModuleStack;
+import com.clubobsidian.obsidianengine.yaml.FileConfiguration;
 
 public class ModuleManager {
 

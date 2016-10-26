@@ -1,13 +1,13 @@
-package com.clubobsidian.obsidianengine.objects.tasks;
+package com.clubobsidian.obsidianengine.task;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleThread extends Thread {
+public class ReadConsoleTask implements Task {
 	
 	@Override
-	public void run()
+	public void call() 
 	{
 		String line = null;
 		if(System.console() != null)
@@ -30,5 +30,6 @@ public class ConsoleThread extends Thread {
 		}
 		
 		System.out.println(line);
+		//Eventually dispatch this to command executor
 	}
 }

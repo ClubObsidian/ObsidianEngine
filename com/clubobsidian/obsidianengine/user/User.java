@@ -1,8 +1,8 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.user;
 
 import java.util.ArrayList;
 
-public interface Sender {
+public interface User {
 
 	public ArrayList<String> executableCommands();
 	

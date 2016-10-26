@@ -1,11 +1,11 @@
-package com.clubobsidian.obsidianengine.objects.module;
+package com.clubobsidian.obsidianengine.module;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
-import com.clubobsidian.obsidianengine.objects.yaml.FileConfiguration;
+import com.clubobsidian.obsidianengine.yaml.FileConfiguration;
 
 public class Module
 {

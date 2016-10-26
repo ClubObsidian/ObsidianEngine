@@ -1,7 +1,7 @@
-package com.clubobsidian.obsidianengine.objects.tasks;
+package com.clubobsidian.obsidianengine.task;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.objects.events.TestEvent;
+import com.clubobsidian.obsidianengine.event.TestEvent;
 
 public class EventTask implements Task {
 

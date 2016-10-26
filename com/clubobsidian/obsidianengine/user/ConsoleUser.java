@@ -1,8 +1,8 @@
-package com.clubobsidian.obsidianengine.objects;
+package com.clubobsidian.obsidianengine.user;
 
 import java.util.ArrayList;
 
-public class ConsoleSender implements Sender {
+public class ConsoleUser implements User {
 
 	@Override
 	public ArrayList<String> executableCommands() 

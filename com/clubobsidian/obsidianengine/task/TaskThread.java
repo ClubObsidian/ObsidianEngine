@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.objects.tasks;
+package com.clubobsidian.obsidianengine.task;
 
 import java.util.ArrayList;
 
