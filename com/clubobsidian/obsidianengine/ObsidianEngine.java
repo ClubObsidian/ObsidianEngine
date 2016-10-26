@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
+import com.clubobsidian.obsidianengine.command.CommandDispatcher;
 import com.clubobsidian.obsidianengine.event.EventDispatcher;
 import com.clubobsidian.obsidianengine.event.EventRegistry;
 import com.clubobsidian.obsidianengine.manager.JarManager;
@@ -14,6 +15,7 @@ import com.clubobsidian.obsidianengine.module.ModuleStack;
 import com.clubobsidian.obsidianengine.task.ConsoleThread;
 import com.clubobsidian.obsidianengine.task.EventTask;
 import com.clubobsidian.obsidianengine.task.TaskThread;
+import com.clubobsidian.obsidianengine.user.ConsoleUser;
 
 
 public class ObsidianEngine {
@@ -25,6 +27,8 @@ public class ObsidianEngine {
 	private static TaskThread taskThread;
 	private static EventDispatcher eventDispatcher;
 	private static EventRegistry eventRegistry;
+	private static ConsoleUser consoleUser = new ConsoleUser();
+	private static CommandDispatcher commandDispatcher = new CommandDispatcher();
 	
 	public static void main(final String[] args)
 	{
@@ -102,6 +106,16 @@ public class ObsidianEngine {
 	public static EventRegistry getEventRegistry()
 	{
 		return ObsidianEngine.eventRegistry;
+	}
+	
+	public static ConsoleUser getConsoleUser()
+	{
+		return ObsidianEngine.consoleUser;
+	}
+	
+	public static CommandDispatcher getCommandDispatcher() 
+	{
+		return ObsidianEngine.commandDispatcher;
 	}
 	
 	public static void tryToinjectClass(String clazz)

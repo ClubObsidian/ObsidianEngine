@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.clubobsidian.obsidianengine.ObsidianEngine;
+
 public class ReadConsoleTask implements Task {
 	
 	@Override
@@ -29,7 +31,9 @@ public class ReadConsoleTask implements Task {
 			}
 		}
 		
-		System.out.println(line);
-		//Eventually dispatch this to command executor
+		if(line != null)
+		{
+			ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), line);
+		}
 	}
 }

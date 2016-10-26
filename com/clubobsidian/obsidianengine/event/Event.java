@@ -3,6 +3,7 @@ package com.clubobsidian.obsidianengine.event;
 public class Event {
 
 	private String name;
+	private boolean cancelled = false;
 	
 	public String getName()
 	{
@@ -11,6 +12,16 @@ public class Event {
 			this.name = this.getClass().getSimpleName();
 		}
 		return this.name;
+	}
+	
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+	
+	public void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
 	}
 	
 	@Override

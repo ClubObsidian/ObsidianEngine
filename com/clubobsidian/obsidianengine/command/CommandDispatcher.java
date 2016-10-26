@@ -2,6 +2,8 @@ package com.clubobsidian.obsidianengine.command;
 
 import java.util.HashMap;
 
+import com.clubobsidian.obsidianengine.user.User;
+
 public class CommandDispatcher {
 
 	private HashMap<String, CommandExecutor> commands = new HashMap<String, CommandExecutor>();
@@ -23,5 +25,12 @@ public class CommandDispatcher {
 	public boolean commandExists(String label)
 	{
 		return this.commands.keySet().contains(label);
+	}
+	
+	public void dispatchCommand(User user, String command)
+	{
+		//TODO - parse out command
+		//TODO - remove prefixes to give option for in-game commands
+		
 	}
 }

@@ -10,17 +10,4 @@ public class Command {
 	{
 		return this.name;
 	}
-	
-	public boolean canExecuteCommand(User sender)
-	{
-		if(sender.executableCommands().contains("*"))
-		{
-			return true;
-		}
-		else
-		{
-			return sender.executableCommands().contains(this.getName());
-		}
-	}
-	
 }
