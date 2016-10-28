@@ -6,6 +6,6 @@ import com.clubobsidian.obsidianengine.permission.Permission;
 
 public interface User {
 
-	public ArrayList<Permission> getPermissions();
+	public ArrayList<String> getPermissions();
 	public void sendMessage(String message);
 }

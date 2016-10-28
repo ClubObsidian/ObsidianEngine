@@ -1,13 +1,5 @@
 package com.clubobsidian.obsidianengine.command;
 
-import com.clubobsidian.obsidianengine.user.User;
+import com.clubobsidian.obsidianengine.action.Action;
 
-public class Command {
-
-	private String name;
-	
-	public String getName()
-	{
-		return this.name;
-	}
-}
+public abstract class Command implements Action {}

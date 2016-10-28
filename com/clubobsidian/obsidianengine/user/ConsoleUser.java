@@ -6,22 +6,23 @@ import com.clubobsidian.obsidianengine.permission.Permission;
 
 public class ConsoleUser implements User {
 
-	private ArrayList<Permission> permissions;
+	private ArrayList<String> permissions;
 	
 	@Override
-	public ArrayList<Permission> getPermissions() 
+	public ArrayList<String> getPermissions() 
 	{
 		if(this.permissions == null)
 		{
-			this.permissions = new ArrayList<Permission>();
-			this.permissions.add(new Permission("*"));
+			this.permissions = new ArrayList<String>();
+			this.permissions.add("*");
 		}
 		return this.permissions;
 	}
 
 	@Override
-	public void sendMessage(String message) {
-		// TODO Auto-generated method stub
+	public void sendMessage(String message) 
+	{
+		
 		
 	}
 }
