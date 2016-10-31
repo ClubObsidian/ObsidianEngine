@@ -1,0 +1,4 @@
+command-prefix: "/" #Console does not have a prefix, this would be for other users besides console
+log-location: "enginelogs" #Location for ObsidianEngine logs, to be implemented
+force-standalone: false #If true ObsidianEngine will force start in standalone even if targeting a jar
+zip-logs: true #Whether or not to zip logs after shutdown
