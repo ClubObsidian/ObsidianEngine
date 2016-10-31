@@ -1,13 +1,11 @@
 package com.clubobsidian.obsidianengine.command;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.user.User;
 
 public class CommandBuilder {
 
 	private CommandExecutor executor;
 	private String permission = null;
-	private User user = null;
 	private boolean forceRegister = false;
 	private String name = null;
 	
@@ -20,12 +18,6 @@ public class CommandBuilder {
 	public CommandBuilder setPermission(String permission)
 	{
 		this.permission = permission;
-		return this;
-	}
-	
-	public CommandBuilder setUser(User user)
-	{
-		this.user = user;
 		return this;
 	}
 	
@@ -45,11 +37,6 @@ public class CommandBuilder {
 	{
 		Command command = new Command()
 		{
-			@Override
-			public User canExecute()
-			{
-				return user;
-			}
 			
 			@Override
 			public String getPermission()

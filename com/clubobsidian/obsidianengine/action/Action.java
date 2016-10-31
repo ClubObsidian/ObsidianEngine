@@ -6,6 +6,5 @@ public interface Action {
 
 	public String getPermission();
 	public String getName();
-	public User canExecute();
 	
 }
