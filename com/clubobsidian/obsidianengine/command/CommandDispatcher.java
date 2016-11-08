@@ -61,6 +61,10 @@ public class CommandDispatcher {
 					executor.onCommand(user, cmd, args);
 				}
 			}
+			else
+			{
+				user.sendMessage("Unknown command " + name + " please try again");
+			}
 		}
 	}
 }

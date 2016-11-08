@@ -3,10 +3,10 @@ package com.clubobsidian.obsidianengine.task;
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.event.TestEvent;
 
-public class EventTask implements Task {
+public class EventRunnable implements Runnable {
 
 	@Override
-	public void call() 
+	public void run() 
 	{
 		ObsidianEngine.getEventDispatcher().dispatchEvent(new TestEvent());
 	}

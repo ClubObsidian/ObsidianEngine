@@ -12,9 +12,11 @@ import com.clubobsidian.obsidianengine.manager.ModuleManager;
 import com.clubobsidian.obsidianengine.module.Module;
 import com.clubobsidian.obsidianengine.module.ModuleLogger;
 import com.clubobsidian.obsidianengine.module.ModuleStack;
+import com.clubobsidian.obsidianengine.scheduler.Scheduler;
 import com.clubobsidian.obsidianengine.task.ConsoleThread;
-import com.clubobsidian.obsidianengine.task.EventTask;
-import com.clubobsidian.obsidianengine.task.TaskThread;
+import com.clubobsidian.obsidianengine.task.EventRunnable;
+import com.clubobsidian.obsidianengine.task.MainThread;
+import com.clubobsidian.obsidianengine.task.TestRunnableThread;
 import com.clubobsidian.obsidianengine.user.ConsoleUser;
 
 
@@ -24,11 +26,12 @@ public class ObsidianEngine {
 	private static ModuleManager moduleManager = new ModuleManager();
 	private static JarManager jarManager = new JarManager();
 	private static BetterURLClassLoader loader;
-	private static TaskThread taskThread;
+	private static MainThread mainThread;
 	private static EventDispatcher eventDispatcher;
 	private static EventRegistry eventRegistry;
 	private static ConsoleUser consoleUser = new ConsoleUser();
 	private static CommandDispatcher commandDispatcher = new CommandDispatcher();
+	private static Scheduler scheduler = new Scheduler();
 	
 	public static void main(final String[] args)
 	{
@@ -53,18 +56,37 @@ public class ObsidianEngine {
 		ObsidianEngine.jarManager.loadJar(args);
 		ObsidianEngine.moduleManager.enableModules();
 
-		ObsidianEngine.taskThread = new TaskThread();
+		ObsidianEngine.mainThread = new MainThread();
 		if(ObsidianEngine.jarManager.getStandalone())
 		{
 			new ConsoleThread().start();
-			ObsidianEngine.taskThread.setDaemon(false);
+			ObsidianEngine.mainThread.setDaemon(false);
+			
+		}
+		
+		ObsidianEngine.mainThread.addRunnable(new EventRunnable());
+		ObsidianEngine.mainThread.start();
+
+		if(args.length > 0)
+		{
 			//ObsidianEngine.taskThread.addTask(new EventTask());
 			//ObsidianEngine.eventRegistry.register(new TestListener());
+			if(args[0].equals("test"))
+			{
+				ObsidianEngine.getScheduler().scheduleAsyncDelayedTask(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						System.out.println("Test testing 1...2....3");
+					}
+				}, 10L);
+				//TestRunnableThread testTaskThread = new TestRunnableThread();
+				//testTaskThread.start();
+			}
 		}
-		ObsidianEngine.taskThread.addTask(new EventTask());
-		ObsidianEngine.taskThread.start();
 	}
-	
+
 	private static void setupEngineModule()
 	{
 		try 
@@ -116,6 +138,16 @@ public class ObsidianEngine {
 	public static CommandDispatcher getCommandDispatcher() 
 	{
 		return ObsidianEngine.commandDispatcher;
+	}
+	
+	public static Scheduler getScheduler()
+	{
+		return ObsidianEngine.scheduler;
+	}
+	
+	public static MainThread getMainThread()
+	{
+		return ObsidianEngine.mainThread;
 	}
 	
 	public static void tryToinjectClass(String clazz)

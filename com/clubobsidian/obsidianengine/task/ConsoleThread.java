@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.clubobsidian.obsidianengine.ObsidianEngine;
+
 public class ConsoleThread extends Thread {
 	
 	@Override
@@ -27,8 +29,8 @@ public class ConsoleThread extends Thread {
 			{
 				e.printStackTrace();
 			}
-		}
-		
-		System.out.println(line);
+		}	
+		if(line != null)
+			ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), line);
 	}
 }

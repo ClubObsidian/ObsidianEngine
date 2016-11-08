@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 
-public class ReadConsoleTask implements Task {
+public class ReadConsoleRunnable implements Runnable{
 	
 	@Override
-	public void call() 
+	public void run() 
 	{
 		String line = null;
 		if(System.console() != null)

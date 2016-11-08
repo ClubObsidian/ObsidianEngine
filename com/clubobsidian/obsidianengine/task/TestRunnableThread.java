@@ -4,24 +4,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public class TestTaskThread extends Thread {
+public class TestRunnableThread extends Thread {
 	
-	private ArrayList<Task> tasks = new ArrayList<Task>();
+	private ArrayList<Runnable> runnables = new ArrayList<Runnable>();
 	
 	@Override
 	public void run()
 	{
 		double starting = System.currentTimeMillis();
-		int amt = 1000000;
-		for(int i = 0; i < amt; i++)
+		Long amt = 10000000000L;
+		for(long i = 0; i < amt; i++)
 		{
-			for(Task task : tasks)
+			for(Runnable task : runnables)
 			{
-				task.call();
+				task.run();
 			}
 		}
 		double ending = System.currentTimeMillis();
-		System.out.println("Time for " + amt + " iterations: " + (new BigDecimal((ending - starting) / 1000.0)).setScale(2, RoundingMode.UP) + "s");
+		System.out.println("Time for " + amt + " iterations: " + (ending - starting) + " nanoseconds");
 		try 
 		{
 			Thread.sleep(1000L);
@@ -31,10 +31,5 @@ public class TestTaskThread extends Thread {
 			e.printStackTrace();
 		}
 		this.run();
-	}
-	
-	public void addTask(Task task)
-	{
-		this.tasks.add(task);
 	}
 }
