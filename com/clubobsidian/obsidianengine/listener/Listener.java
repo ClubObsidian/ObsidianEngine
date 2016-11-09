@@ -1,5 +1,3 @@
 package com.clubobsidian.obsidianengine.listener;
 
-public interface Listener {
-
-}
+public interface Listener {}

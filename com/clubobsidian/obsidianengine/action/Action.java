@@ -1,7 +1,5 @@
 package com.clubobsidian.obsidianengine.action;
 
-import com.clubobsidian.obsidianengine.user.User;
-
 public interface Action {
 
 	public String getPermission();

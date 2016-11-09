@@ -2,6 +2,7 @@ package com.clubobsidian.obsidianengine;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.concurrent.Future;
 
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.command.CommandDispatcher;
@@ -14,6 +15,7 @@ import com.clubobsidian.obsidianengine.module.ModuleLogger;
 import com.clubobsidian.obsidianengine.module.ModuleStack;
 import com.clubobsidian.obsidianengine.scheduler.Scheduler;
 import com.clubobsidian.obsidianengine.task.ConsoleThread;
+import com.clubobsidian.obsidianengine.task.EngineRunnable;
 import com.clubobsidian.obsidianengine.task.EventRunnable;
 import com.clubobsidian.obsidianengine.task.MainThread;
 import com.clubobsidian.obsidianengine.task.TestRunnableThread;
@@ -73,14 +75,25 @@ public class ObsidianEngine {
 			//ObsidianEngine.eventRegistry.register(new TestListener());
 			if(args[0].equals("test"))
 			{
-				ObsidianEngine.getScheduler().scheduleAsyncDelayedTask(new Runnable()
+				final Future<?> future = ObsidianEngine.getScheduler().scheduleAsyncRepeatingTask(new EngineRunnable()
 				{
 					@Override
 					public void run()
 					{
 						System.out.println("Test testing 1...2....3");
+						
 					}
-				}, 10L);
+				}, 1000L, 1000L);
+				
+				ObsidianEngine.getScheduler().scheduleSyncDelayedTask(new EngineRunnable()
+				{
+					@Override
+					public void run()
+					{
+						System.out.println("Cancelling...");
+						future.cancel(true);
+					}
+				}, 5000L);
 				//TestRunnableThread testTaskThread = new TestRunnableThread();
 				//testTaskThread.start();
 			}

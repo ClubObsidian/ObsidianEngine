@@ -6,17 +6,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
+import com.clubobsidian.obsidianengine.task.EngineRunnable;
 
 public class Scheduler {
 
 	private ExecutorService service = Executors.newCachedThreadPool();
 
-	public void callSynchronously(Runnable runnable)
+	public void callSynchronously(final EngineRunnable runnable)
 	{
-		ObsidianEngine.getMainThread().addRunnable(runnable);
+		ObsidianEngine.getMainThread().addRunnable(runnable.setKeepAlive(false));
 	}
 	
-	public Future<?> scheduleSyncDelayedTask(final Runnable runnable, Long delay)
+	public Future<?> scheduleSyncDelayedTask(final EngineRunnable runnable, final Long delay)
 	{
 		return this.service.submit(new Runnable()
 		{
@@ -36,16 +37,25 @@ public class Scheduler {
 		});
 	}
 
-	public Future<?> scheduleSyncRepeatingTask(final Runnable runnable, Long delayStarting, Long delayBetweenExecutions)
+	public Future<?> scheduleSyncRepeatingTask(final EngineRunnable runnable, Long delayStarting, Long delayBetweenExecutions)
 	{
+
 		return this.service.submit(new Runnable()
 		{
+			private boolean ran = false;
+			
 			@Override
 			public void run()
 			{
 				try 
 				{
-					TimeUnit.MILLISECONDS.sleep(delayStarting);
+
+					if(!this.ran)
+					{
+						TimeUnit.MILLISECONDS.sleep(delayStarting);
+						this.ran = true;
+					}
+
 					callSynchronously(runnable);
 					TimeUnit.MILLISECONDS.sleep(delayBetweenExecutions);
 					this.run();
@@ -63,7 +73,7 @@ public class Scheduler {
 		return this.service.submit(runnable);
 	}
 
-	public Future<?> scheduleAsyncDelayedTask(final Runnable runnable, Long delay)
+	public Future<?> scheduleAsyncDelayedTask(final EngineRunnable runnable, Long delayStarting)
 	{
 		return this.service.submit(new Runnable()
 		{
@@ -72,7 +82,7 @@ public class Scheduler {
 			{
 				try 
 				{
-					TimeUnit.MILLISECONDS.sleep(delay);
+					TimeUnit.MILLISECONDS.sleep(delayStarting);
 					runnable.run();
 				} 
 				catch (InterruptedException e) 
@@ -82,16 +92,23 @@ public class Scheduler {
 			}
 		});
 	}
-	public Future<?> scheduleAsyncDelayedTask(final Runnable runnable, Long delay, Long delayBetweenExecutions)
+	
+	public Future<?> scheduleAsyncRepeatingTask(final EngineRunnable runnable, Long delay, Long delayBetweenExecutions)
 	{
 		return this.service.submit(new Runnable()
 		{
+			private boolean ran = false;
+			
 			@Override
 			public void run()
 			{
 				try 
 				{
-					TimeUnit.MILLISECONDS.sleep(delay);
+					if(!this.ran)
+					{
+						TimeUnit.MILLISECONDS.sleep(delay);
+						this.ran = true;
+					}
 					runnable.run();
 					TimeUnit.MILLISECONDS.sleep(delayBetweenExecutions);
 					this.run();

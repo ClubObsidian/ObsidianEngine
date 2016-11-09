@@ -31,6 +31,16 @@ public class ConsoleThread extends Thread {
 			}
 		}	
 		if(line != null)
-			ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), line);
+		{
+			final String finalLine = line;
+			ObsidianEngine.getScheduler().callSynchronously(new EngineRunnable()
+			{
+				@Override
+				public void run()
+				{
+					ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), finalLine);
+				}
+			});
+		}
 	}
 }
