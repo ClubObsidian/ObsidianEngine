@@ -33,7 +33,7 @@ public class ConsoleThread extends Thread {
 		if(line != null)
 		{
 			final String finalLine = line;
-			ObsidianEngine.getScheduler().callSynchronously(new EngineRunnable()
+			ObsidianEngine.getScheduler().callSynchronously(new Runnable()
 			{
 				@Override
 				public void run()

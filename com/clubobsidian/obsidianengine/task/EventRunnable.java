@@ -3,7 +3,7 @@ package com.clubobsidian.obsidianengine.task;
 import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.event.TestEvent;
 
-public class EventRunnable implements EngineRunnable {
+public class EventRunnable implements Runnable {
 
 	@Override
 	public void run() 

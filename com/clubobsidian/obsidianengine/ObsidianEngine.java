@@ -15,7 +15,6 @@ import com.clubobsidian.obsidianengine.module.ModuleLogger;
 import com.clubobsidian.obsidianengine.module.ModuleStack;
 import com.clubobsidian.obsidianengine.scheduler.Scheduler;
 import com.clubobsidian.obsidianengine.task.ConsoleThread;
-import com.clubobsidian.obsidianengine.task.EngineRunnable;
 import com.clubobsidian.obsidianengine.task.EventRunnable;
 import com.clubobsidian.obsidianengine.task.MainThread;
 import com.clubobsidian.obsidianengine.task.TestRunnableThread;
@@ -66,7 +65,7 @@ public class ObsidianEngine {
 			
 		}
 		
-		ObsidianEngine.mainThread.addRunnable(new EventRunnable());
+		ObsidianEngine.mainThread.addRunnable(new EventRunnable(), true);
 		ObsidianEngine.mainThread.start();
 
 		if(args.length > 0)
@@ -75,7 +74,7 @@ public class ObsidianEngine {
 			//ObsidianEngine.eventRegistry.register(new TestListener());
 			if(args[0].equals("test"))
 			{
-				final Future<?> future = ObsidianEngine.getScheduler().scheduleAsyncRepeatingTask(new EngineRunnable()
+				final Future<?> future = ObsidianEngine.getScheduler().scheduleAsyncRepeatingTask(new Runnable()
 				{
 					@Override
 					public void run()
@@ -85,7 +84,7 @@ public class ObsidianEngine {
 					}
 				}, 1000L, 1000L);
 				
-				ObsidianEngine.getScheduler().scheduleSyncDelayedTask(new EngineRunnable()
+				ObsidianEngine.getScheduler().scheduleSyncDelayedTask(new Runnable()
 				{
 					@Override
 					public void run()

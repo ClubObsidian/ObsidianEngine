@@ -1,33 +1,29 @@
 package com.clubobsidian.obsidianengine.task;
 
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MainThread extends Thread {
 	
-	private ConcurrentLinkedQueue<EngineRunnable> runnables = new ConcurrentLinkedQueue<EngineRunnable>();
+	private ConcurrentLinkedQueue<RunnableWrapper> runnables = new ConcurrentLinkedQueue<RunnableWrapper>();
 	
 	@Override
 	public void run()
 	{
 		while(true)
 		{
-			for(EngineRunnable runnable : this.runnables)
+			for(RunnableWrapper runnable : this.runnables)
 			{
-				runnable.run();
-				if(!runnable.keepAlive())
+				runnable.getRunnable().run();
+				if(!runnable.getKeepAlive())
 				{
-					runnables.remove(runnable);
+					this.runnables.remove(runnable);
 				}
 			}
 		}
 	}
 	
-	public void addRunnable(EngineRunnable runnable)
+	public void addRunnable(Runnable runnable, boolean keepAlive)
 	{
-		this.runnables.add(runnable);
+		this.runnables.add(new RunnableWrapper(runnable, keepAlive));
 	}
 }

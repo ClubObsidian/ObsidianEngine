@@ -6,18 +6,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.task.EngineRunnable;
 
 public class Scheduler {
 
 	private ExecutorService service = Executors.newCachedThreadPool();
 
-	public void callSynchronously(final EngineRunnable runnable)
+	public void callSynchronously(final Runnable runnable)
 	{
-		ObsidianEngine.getMainThread().addRunnable(runnable.setKeepAlive(false));
+		ObsidianEngine.getMainThread().addRunnable(runnable, false);
 	}
 	
-	public Future<?> scheduleSyncDelayedTask(final EngineRunnable runnable, final Long delay)
+	public Future<?> scheduleSyncDelayedTask(final Runnable runnable, final Long delay)
 	{
 		return this.service.submit(new Runnable()
 		{
@@ -37,7 +36,7 @@ public class Scheduler {
 		});
 	}
 
-	public Future<?> scheduleSyncRepeatingTask(final EngineRunnable runnable, Long delayStarting, Long delayBetweenExecutions)
+	public Future<?> scheduleSyncRepeatingTask(final Runnable runnable, Long delayStarting, Long delayBetweenExecutions)
 	{
 
 		return this.service.submit(new Runnable()
@@ -49,7 +48,6 @@ public class Scheduler {
 			{
 				try 
 				{
-
 					if(!this.ran)
 					{
 						TimeUnit.MILLISECONDS.sleep(delayStarting);
@@ -73,7 +71,7 @@ public class Scheduler {
 		return this.service.submit(runnable);
 	}
 
-	public Future<?> scheduleAsyncDelayedTask(final EngineRunnable runnable, Long delayStarting)
+	public Future<?> scheduleAsyncDelayedTask(final Runnable runnable, Long delayStarting)
 	{
 		return this.service.submit(new Runnable()
 		{
@@ -93,7 +91,7 @@ public class Scheduler {
 		});
 	}
 	
-	public Future<?> scheduleAsyncRepeatingTask(final EngineRunnable runnable, Long delay, Long delayBetweenExecutions)
+	public Future<?> scheduleAsyncRepeatingTask(final Runnable runnable, Long delay, Long delayBetweenExecutions)
 	{
 		return this.service.submit(new Runnable()
 		{
