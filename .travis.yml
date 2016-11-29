@@ -4,5 +4,6 @@ jdk:
 script: ant build makejar
 deploy:
   provider: releases
+  api_key: "$GITHUB_TOKEN"
   file: "ObsidianEngine.jar"
   skip_cleanup: true
