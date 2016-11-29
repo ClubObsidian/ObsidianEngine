@@ -44,7 +44,7 @@
         <antcall target="build"/>
     </target>
 	<target name ="makejar" description="Create a jar for ObsidianEngine">
-	  <jar jarfile="ObsidianEngine.jar" basedir="bin">
+	  <jar jarfile="ObsidianEngine.jar" basedir="ObsidianEngine" includes="*">
 	    <manifest>
 		  <attribute name="Main-Class" value="com.clubobsidian.obsidianengine.ObsidianEngine"/>
 		</manifest>
