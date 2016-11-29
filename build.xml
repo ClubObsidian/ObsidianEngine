@@ -49,9 +49,6 @@
 		<fileset>
 			<include name="**/*.yml"/>
 		</fileset>
-		<fileset>
-			<include name="**/LICENSE*"/>
-		</fileset>
 		<manifest>
 		  <attribute name="Main-Class" value="com.clubobsidian.obsidianengine.ObsidianEngine"/>
 		</manifest>
