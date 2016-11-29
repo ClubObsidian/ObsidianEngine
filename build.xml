@@ -46,7 +46,12 @@
 	<target name ="makejar" description="Create a jar for ObsidianEngine">
 	  <jar jarfile="ObsidianEngine.jar">
 	    <fileset dir="bin"/>
-		<fileset file="obsidianengine.yml"/>
+		<fileset>
+			<include name="**/*.yml"/>
+		</fileset>
+		<fileset>
+			<include name="**/LICENSE*"/>
+		</fileset>
 		<manifest>
 		  <attribute name="Main-Class" value="com.clubobsidian.obsidianengine.ObsidianEngine"/>
 		</manifest>
