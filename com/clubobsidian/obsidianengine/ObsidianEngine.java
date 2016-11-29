@@ -17,7 +17,6 @@ import com.clubobsidian.obsidianengine.scheduler.Scheduler;
 import com.clubobsidian.obsidianengine.task.ConsoleThread;
 import com.clubobsidian.obsidianengine.task.EventRunnable;
 import com.clubobsidian.obsidianengine.task.MainThread;
-import com.clubobsidian.obsidianengine.task.TestRunnableThread;
 import com.clubobsidian.obsidianengine.user.ConsoleUser;
 
 
@@ -45,7 +44,6 @@ public class ObsidianEngine {
 		//System.out.println(new File("test.yml").getAbsolutePath());
 
 		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());
-		
 		
 		ObsidianEngine.eventRegistry = new EventRegistry();
 		ObsidianEngine.eventDispatcher = new EventDispatcher();

@@ -21,4 +21,14 @@ public class BetterURLClassLoader extends URLClassLoader {
 	{
 		return super.findClass(name);
 	}
+	
+	public URL[] getURLS()
+	{
+		return super.getURLs();
+	}
+	
+	public void defineClass(String name, byte[] bytes)
+	{
+		this.defineClass(name, bytes, 0, bytes.length);
+	}
 }

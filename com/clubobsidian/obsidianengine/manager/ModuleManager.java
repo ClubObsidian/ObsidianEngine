@@ -221,18 +221,7 @@ public class ModuleManager {
 			String[] softDependencies = mod.getSoftDependencies();
 			
 			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
-			if(loadBefore.length > 0)
-			{
-				for(String str : loadBefore)
-				{
-					int indexOfFindModule = this.modules.getIndexOfModule(str);
-					
-					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
-					{
-						return false;
-					}
-				}
-			}
+			
 			
 			if(dependencies.length > 0)
 			{
@@ -262,22 +251,6 @@ public class ModuleManager {
 				}
 			}
 			
-		}
-		return true;
-	}
-	
-	private void tryToOrderModules()
-	{
-		for(int i = 0; i < this.modules.size(); i++)
-		{
-			Module mod = this.modules.get(i);
-			mod.onEnable();
-			System.out.println("Mod size: " + this.modules.size());
-			String[] loadBefore = mod.getLoadBefore();
-			String[] dependencies = mod.getDependencies();
-			String[] softDependencies = mod.getSoftDependencies();
-			
-			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
 			if(loadBefore.length > 0)
 			{
 				for(String str : loadBefore)
@@ -286,12 +259,28 @@ public class ModuleManager {
 					
 					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
 					{
-						this.modules.remove(mod);
-						this.modules.insertBefore(str, mod);
-						i++;
+						return false;
 					}
 				}
 			}
+			
+		}
+		return true;
+	}
+	
+	private void tryToOrderModules()
+	{
+		
+		for(int i = 0; i < this.modules.size(); i++)
+		{
+			Module mod = this.modules.get(i);
+			System.out.println("Mod size: " + this.modules.size());
+			System.out.print(i + "- " + mod.getName());
+			String[] loadBefore = mod.getLoadBefore();
+			String[] dependencies = mod.getDependencies();
+			String[] softDependencies = mod.getSoftDependencies();
+			
+			int indexOfCurrentModule = this.modules.getIndexOfModule(mod.getName());
 			
 			if(dependencies.length > 0)
 			{
@@ -328,6 +317,36 @@ public class ModuleManager {
 				}
 			}
 			
+			if(loadBefore.length > 0)
+			{
+				for(String str : loadBefore)
+				{
+					int indexOfFindModule = this.modules.getIndexOfModule(str);
+					
+					
+					System.out.println(mod.getName() + " - " + indexOfCurrentModule + " - " + indexOfFindModule);
+					if(indexOfFindModule != -1 && indexOfCurrentModule > indexOfFindModule) //If module is found and index is greater than the searched module
+					{
+						this.modules.remove(mod);
+						this.modules.insertBefore(str, mod);
+						i++;
+					}
+				}
+				
+				if(dependencies.length > 0)
+				{
+					for(String str : dependencies)
+					{
+						int indexOfFindModule = this.modules.getIndexOfModule(str);
+						if(indexOfFindModule != -1 && indexOfCurrentModule < indexOfFindModule) //If the module is found and the index is less than the searched module
+						{
+							Module depModule = this.modules.get(this.modules.getIndexOfModule(str));
+							this.modules.remove(depModule);
+							this.modules.insertBefore(mod.getName(), depModule);
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -376,7 +395,7 @@ public class ModuleManager {
 	{
 		for(Module m : this.modules)
 		{
-			System.out.println("Enabling " + m.getName() + " with main class " + m.getMain());
+			ObsidianEngine.getLogger().info("Enabling " + m.getName() + " with main class " + m.getMain());
 			m.onEnable();
 		}
 	}
