@@ -1,5 +1,7 @@
 # ObsidianEngine - A platform agnostic module server
 
+[![Build Status](https://travis-ci.org/ClubObsidian/ObsidianEngine.svg?branch=master)](https://travis-ci.org/ClubObsidian/ObsidianEngine)
+
 ObsidianEngine is a modular based system to modify jars and more on runtime. ObsidianEngine can be used to inject class files for overriding classes in the main jar file. ObsidianEngine can also be used for asm bytecode editing or anything else you can really thing of. The module system is inspired by the way that Bukkit loads plugins. ObsidianEngine can also run in standalone mode to create your own platforms for game servers, providing administration to tools written in Java and much more.
 
 # FAQ
