@@ -19,6 +19,5 @@ public class RunnableWrapper {
 	public boolean getKeepAlive()
 	{
 		return this.keepAlive;
-	}
-	
+	}	
 }

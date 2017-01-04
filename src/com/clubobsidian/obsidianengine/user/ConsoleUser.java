@@ -3,9 +3,8 @@ package com.clubobsidian.obsidianengine.user;
 import java.util.ArrayList;
 
 import com.clubobsidian.obsidianengine.ObsidianEngine;
-import com.clubobsidian.obsidianengine.permission.Permission;
 
-public class ConsoleUser implements User {
+public class ConsoleUser extends User {
 
 	private ArrayList<String> permissions;
 	
