@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -32,22 +32,30 @@ public class FileConfiguration {
 		FileConfiguration file = new FileConfiguration();
 		Yaml yaml = file.getYaml();
 		Map<String, Object> values = (Map<String, Object>)(yaml.load(stream));
+		
 		for(String key : values.keySet())
 		{
-			Object value = values.get(key);
-			if(value instanceof ArrayList)
+			if(key.contains("."))
 			{
-				ArrayList<?> list = (ArrayList<?>) value;
-				Object[] ar = list.toArray(new Object[list.size()]);
-				file.values.put(key, ar);
-			}
-			else if(value instanceof String)
-			{
-				file.values.put(key, (((String) value).toCharArray()));
+				
 			}
 			else
 			{
-				file.values.put(key, value);
+				Object value = values.get(key);
+				if(value instanceof ArrayList)
+				{
+					ArrayList<?> list = (ArrayList<?>) value;
+					Object[] ar = list.toArray(new Object[list.size()]);
+					file.values.put(key, ar);
+				}
+				else if(value instanceof String)
+				{
+					file.values.put(key, (((String) value).toCharArray()));
+				}
+				else
+				{
+					file.values.put(key, value);
+				}
 			}
 		}
 		try 
@@ -126,13 +134,13 @@ public class FileConfiguration {
 	
 	public String getString(String key)
 	{
-		Object obj = this.values.get(key);
-		if(!(obj instanceof char[]))
-		{
-			return obj.toString();
-		}
-		
-		return String.valueOf(new CloneWrapper<char[]>().clone(obj));
+		//Object obj = this.values.get(key);
+	//	if(!(obj instanceof char[]))
+		//{
+		//	return obj.toString();
+		//}
+		return (String) this.get(key);
+		//return String.valueOf(new CloneWrapper<char[]>().clone(obj));
 	}
 	
 	public Boolean getBoolean(String key)
@@ -152,12 +160,46 @@ public class FileConfiguration {
 	
 	public Object get(String key)
 	{
-		Object obj = this.values.get(key);
-		if(obj instanceof char[])
+		if(key.contains("."))
 		{
-			return this.getString(key);
+			System.out.println("Key has .");
+			String[] split = key.split("\\.");
+			Object current = null;
+			for(int i = 0; i < split.length; i++)
+			{
+				if(current == null)
+				{
+					current = split[i];
+					System.out.println("Null: " + current);
+				}
+				else if(current instanceof HashMap)
+				{
+					HashMap<String, Object> currentMap = (HashMap<String,Object>) current;
+					current = currentMap.get(split[i]);
+					System.out.println("HashMap: " + current);
+				}
+				else if(current instanceof char[])
+				{
+					String str = String.valueOf(new CloneWrapper<char[]>().clone(current));
+					System.out.println("String: " + str);
+					return str;
+				}
+				else
+				{
+					return current;
+				}
+			}
+			return null;
 		}
-		return new CloneWrapper<Object>().clone(obj);
+		else
+		{
+			Object obj = this.values.get(key);
+			if(obj instanceof char[])
+			{
+				return this.getString(key);
+			}
+			return new CloneWrapper<Object>().clone(obj);
+		}
 	}
 	
 	public boolean exists(String key)
