@@ -11,7 +11,7 @@ public class ObsidianEngineTest {
 		//args = new String[] {"test"};
 		//ObsidianEngine.main(args);
 		FileConfiguration yaml = FileConfiguration.loadFile(new File("test.yml"));
-		System.out.println(yaml.getString("need.to.support.trees"));
-		System.out.println(yaml.getString("main"));
+		System.out.println("Trees are supported: " + yaml.getString("need.to.support.trees"));
+		System.out.println("How many: " + yaml.getInt("need.to.support.howmany"));
 	}	
 }

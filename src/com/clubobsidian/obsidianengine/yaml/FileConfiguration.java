@@ -9,9 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.clubobsidian.obsidianengine.snakeyaml.Yaml;
 
@@ -32,30 +33,34 @@ public class FileConfiguration {
 		FileConfiguration file = new FileConfiguration();
 		Yaml yaml = file.getYaml();
 		Map<String, Object> values = (Map<String, Object>)(yaml.load(stream));
-		
+
 		for(String key : values.keySet())
 		{
-			if(key.contains("."))
+			Object value = values.get(key);
+			if(value instanceof ArrayList)
 			{
+				ArrayList<?> list = (ArrayList<?>) value;
+				Object[] ar = list.toArray(new Object[list.size()]);
+				file.values.put(key, ar);
+			}
+			else if(value instanceof String)
+			{
+				file.values.put(key, (((String) value).toCharArray()));
+			}
+			else if(value instanceof HashMap)
+			{
+				System.out.println("key: " + key + " is a hashmap");
+				HashMap<String, Object> map = (HashMap<String, Object>) value;
+				file.values.put(key, map);
+				for(Entry<String, Object> entry : map.entrySet())
+				{
+					recurHashMap(map, entry.getKey(), entry.getValue());
+				}
 				
 			}
 			else
 			{
-				Object value = values.get(key);
-				if(value instanceof ArrayList)
-				{
-					ArrayList<?> list = (ArrayList<?>) value;
-					Object[] ar = list.toArray(new Object[list.size()]);
-					file.values.put(key, ar);
-				}
-				else if(value instanceof String)
-				{
-					file.values.put(key, (((String) value).toCharArray()));
-				}
-				else
-				{
-					file.values.put(key, value);
-				}
+				file.values.put(key, value);
 			}
 		}
 		try 
@@ -68,6 +73,41 @@ public class FileConfiguration {
 			return null;
 		}
 		return file;
+	}
+	
+	private static void recurHashMap(Object previous, String key, Object current)
+	{
+		LinkedHashMap<String, Object> map = ((LinkedHashMap<String, Object>) previous);
+		System.out.println("Top level: " +  key + current.toString() + " class: " + current.getClass());
+		if(current instanceof ArrayList)
+		{
+			ArrayList<?> list = (ArrayList<?>) current;
+			Object[] ar = list.toArray(new Object[list.size()]);
+			map.put(key, ar);
+		}
+		else if(current instanceof String)
+		{
+			String str = (String) current;
+			System.out.println("Recur: " + str);
+			map.put(key, ((str).toCharArray()));
+		}
+		else if(current instanceof LinkedHashMap)
+		{
+			map.put(key, current);
+			System.out.println(key + " is a hashmap");
+			
+			LinkedHashMap<String, Object> currentMap = (LinkedHashMap<String, Object>) current;
+			System.out.println("Current map: " + currentMap);
+			
+			for(Entry<String, Object> entry : currentMap.entrySet())
+			{
+				recurHashMap(currentMap, entry.getKey(), entry.getValue());
+			}
+		}
+		else
+		{
+			map.put(key, current);
+		}
 	}
 	
 	public static FileConfiguration loadFile(File file)
@@ -90,7 +130,7 @@ public class FileConfiguration {
 	
 	public String[] getStringArray(String key)
 	{
-		Object[] objs = new CloneWrapper<Object[]>().clone(this.values.get(key));
+		Object[] objs = new CloneWrapper<Object[]>().clone(this.get(key));
 		String[] strs = new String[objs.length];
 		for(int i = 0; i < strs.length; i++)
 		{
@@ -101,7 +141,7 @@ public class FileConfiguration {
 
 	public ArrayList<String> getStringList(String key)
 	{
-		Object[] ar = new CloneWrapper<Object[]>().clone(this.values.get(key));
+		Object[] ar = new CloneWrapper<Object[]>().clone(this.get(key));
 		ArrayList<String> list = new ArrayList<String>();
 		for(Object obj : ar)
 		{
@@ -112,7 +152,7 @@ public class FileConfiguration {
 	
 	public ArrayList<Integer> getIntegerList(String key)
 	{
-		Object[] ar = new CloneWrapper<Object[]>().clone(this.values.get(key));
+		Object[] ar = new CloneWrapper<Object[]>().clone(this.get(key));
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(Object obj : ar)
 		{
@@ -123,7 +163,7 @@ public class FileConfiguration {
 	
 	public ArrayList<Double> getDoubleList(String key)
 	{
-		Object[] ar = new CloneWrapper<Object[]>().clone(this.values.get(key));
+		Object[] ar = new CloneWrapper<Object[]>().clone(this.get(key));
 		ArrayList<Double> list = new ArrayList<Double>();
 		for(Object obj : ar)
 		{
@@ -145,17 +185,17 @@ public class FileConfiguration {
 	
 	public Boolean getBoolean(String key)
 	{
-		return new CloneWrapper<Boolean>().clone(this.values.get(key));
+		return new CloneWrapper<Boolean>().clone(this.get(key));
 	}
 	
 	public Integer getInt(String key)
 	{
-		return new CloneWrapper<Integer>().clone(this.values.get(key));
+		return new CloneWrapper<Integer>().clone(this.get(key));
 	}
 	
 	public Double getDouble(String key)
 	{
-		return new CloneWrapper<Double>().clone(this.values.get(key));
+		return new CloneWrapper<Double>().clone(this.get(key));
 	}
 	
 	public Object get(String key)
@@ -164,19 +204,24 @@ public class FileConfiguration {
 		{
 			System.out.println("Key has .");
 			String[] split = key.split("\\.");
-			Object current = null;
-			for(int i = 0; i < split.length; i++)
+			Object current = this.values.get(split[0]);
+			for(int i = 1; i < split.length + 1; i++)
 			{
-				if(current == null)
+				
+				/*if(current == null)
 				{
 					current = split[i];
 					System.out.println("Null: " + current);
-				}
-				else if(current instanceof HashMap)
+					return null;
+				}*/
+				
+				if(current != null)
+					System.out.println("current " + current.getClass());
+				if(current instanceof LinkedHashMap)
 				{
-					HashMap<String, Object> currentMap = (HashMap<String,Object>) current;
+					System.out.println("hashmap: " + current);
+					LinkedHashMap<String, Object> currentMap = (LinkedHashMap<String,Object>) current;
 					current = currentMap.get(split[i]);
-					System.out.println("HashMap: " + current);
 				}
 				else if(current instanceof char[])
 				{
