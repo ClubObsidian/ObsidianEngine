@@ -1,4 +1,4 @@
-package com.clubobsidian.obsidianengine.task;
+package com.clubobsidian.obsidianengine.threads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,15 +32,8 @@ public class ConsoleThread extends Thread {
 		}	
 		if(line != null)
 		{
-			final String finalLine = line;
-			ObsidianEngine.getScheduler().callSynchronously(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), finalLine);
-				}
-			});
+			ObsidianEngine.getCommandDispatcher().dispatchCommand(ObsidianEngine.getConsoleUser(), line);
+			this.run();
 		}
 	}
 }

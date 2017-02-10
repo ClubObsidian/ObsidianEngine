@@ -2,21 +2,19 @@ package com.clubobsidian.obsidianengine;
 
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.concurrent.Future;
 
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.command.CommandDispatcher;
 import com.clubobsidian.obsidianengine.event.EventDispatcher;
 import com.clubobsidian.obsidianengine.event.EventRegistry;
+import com.clubobsidian.obsidianengine.listener.TestListener;
 import com.clubobsidian.obsidianengine.manager.JarManager;
 import com.clubobsidian.obsidianengine.manager.ModuleManager;
 import com.clubobsidian.obsidianengine.module.Module;
 import com.clubobsidian.obsidianengine.module.ModuleLogger;
 import com.clubobsidian.obsidianengine.module.ModuleStack;
 import com.clubobsidian.obsidianengine.scheduler.Scheduler;
-import com.clubobsidian.obsidianengine.task.ConsoleThread;
-import com.clubobsidian.obsidianengine.task.EventRunnable;
-import com.clubobsidian.obsidianengine.task.MainThread;
+import com.clubobsidian.obsidianengine.threads.ConsoleThread;
 import com.clubobsidian.obsidianengine.user.ConsoleUser;
 
 
@@ -26,23 +24,16 @@ public class ObsidianEngine {
 	private static ModuleManager moduleManager = new ModuleManager();
 	private static JarManager jarManager = new JarManager();
 	private static BetterURLClassLoader loader;
-	private static MainThread mainThread;
 	private static EventDispatcher eventDispatcher;
 	private static EventRegistry eventRegistry;
 	private static ConsoleUser consoleUser = new ConsoleUser();
 	private static CommandDispatcher commandDispatcher = new CommandDispatcher();
 	private static Scheduler scheduler = new Scheduler();
 	
+	public static String asdf = "sometestvalue";
+	
 	public static void main(final String[] args)
 	{
-		//for(String str : args)
-		//{
-		//	System.out.println(str);
-		//}
-
-		//FileConfiguration file = FileConfiguration.loadFile(new File("test.yml"));
-		//System.out.println(new File("test.yml").getAbsolutePath());
-
 		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());
 		
 		ObsidianEngine.eventRegistry = new EventRegistry();
@@ -55,44 +46,18 @@ public class ObsidianEngine {
 		ObsidianEngine.jarManager.loadJar(args);
 		ObsidianEngine.moduleManager.enableModules();
 
-		ObsidianEngine.mainThread = new MainThread();
 		if(ObsidianEngine.jarManager.getStandalone())
 		{
-			new ConsoleThread().start();
-			ObsidianEngine.mainThread.setDaemon(false);
-			
+			ConsoleThread consoleThread = new ConsoleThread();
+			consoleThread.setDaemon(false);
+			consoleThread.start();
 		}
 		
-		ObsidianEngine.mainThread.addRunnable(new EventRunnable(), true);
-		ObsidianEngine.mainThread.start();
-
 		if(args.length > 0)
 		{
-			//ObsidianEngine.taskThread.addTask(new EventTask());
-			//ObsidianEngine.eventRegistry.register(new TestListener());
 			if(args[0].equals("test"))
 			{
-				final Future<?> future = ObsidianEngine.getScheduler().scheduleAsyncRepeatingTask(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						System.out.println("Test testing 1...2....3");
-						
-					}
-				}, 1000L, 1000L);
-				
-				ObsidianEngine.getScheduler().scheduleSyncDelayedTask(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						System.out.println("Cancelling...");
-						future.cancel(true);
-					}
-				}, 5000L);
-				//TestRunnableThread testTaskThread = new TestRunnableThread();
-				//testTaskThread.start();
+				ObsidianEngine.eventRegistry.register(new TestListener());
 			}
 		}
 	}
@@ -153,11 +118,6 @@ public class ObsidianEngine {
 	public static Scheduler getScheduler()
 	{
 		return ObsidianEngine.scheduler;
-	}
-	
-	public static MainThread getMainThread()
-	{
-		return ObsidianEngine.mainThread;
 	}
 	
 	public static void tryToinjectClass(String clazz)

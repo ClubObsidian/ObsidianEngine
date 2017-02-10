@@ -31,7 +31,7 @@ public class CommandDispatcher {
 		return this.commands.keySet().contains(label);
 	}
 	
-	public void dispatchCommand(User user, String command)
+	public synchronized void dispatchCommand(User user, String command)
 	{
 		char ch = command.charAt(0);
 		if(ch == '!' || ch == '/')

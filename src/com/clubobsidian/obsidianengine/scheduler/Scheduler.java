@@ -5,15 +5,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.clubobsidian.obsidianengine.ObsidianEngine;
-
 public class Scheduler {
 
 	private ExecutorService service = Executors.newCachedThreadPool();
 
-	public void callSynchronously(final Runnable runnable)
+	public synchronized void callSynchronously(final Runnable runnable)
 	{
-		ObsidianEngine.getMainThread().addRunnable(runnable, false);
+		runnable.run();
 	}
 	
 	public Future<?> scheduleSyncDelayedTask(final Runnable runnable, final Long delay)
