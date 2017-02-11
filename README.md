@@ -24,6 +24,8 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 
 [JarPatcher](http://github.com/virustotalop/JarPatcher) - JarPatcher is the first project I worked on with ClassLoaders and it inspired me to make ObsidianEngine.
 
+[okio](https://github.com/square/okio) - The sneakthrow code to replace lombok so it is not needed as a compile time dependency.
+
 [SnakeYaml](https://bitbucket.org/asomov/snakeyaml) - For the easy to use configuration formatting library that so many Bukkit developers have either grown to love or hate. 
 
 # License
