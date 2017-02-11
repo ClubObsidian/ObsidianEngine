@@ -50,6 +50,8 @@
 		<fileset file="LICENSE"/>
 		<fileset file="LICENSE-APACHECOMMONSLOGGING"/>
 		<fileset file="LICENSE-SNAKEYAML"/>
+		<fileset file="LICENSE-EVENT4J"/>
+		<fileset file="LICENSE-OKIO"/>
 		<manifest>
 		  <attribute name="Main-Class" value="com.clubobsidian.obsidianengine.ObsidianEngine"/>
 		</manifest>
