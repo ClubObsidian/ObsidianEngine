@@ -16,11 +16,13 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 //Todo
 
 # Credits
+[Apache Foundation](https://www.apache.org/) - For their great libraries, their logging library is used in ObsidianEngine due to its ease of integration.
+
 [Bukkit](https://github.com/Bukkit/Bukkit) - For inspiring the project, I've taken a similar approach in design philosophy from the project
 
-[JarPatcher](http://github.com/virustotalop/JarPatcher) - JarPatcher is the first project I worked on with ClassLoaders and it inspired me to make ObsidianEngine.
+[Event4J](https://github.com/Techcable/Event4J) - For the event system used by ObsidianEngine, its a great ASM based event system compared to the commonly used reflection based system.
 
-[Apache Foundation](https://www.apache.org/) - For their great libraries, their logging library is used in ObsidianEngine due to its ease of integration.
+[JarPatcher](http://github.com/virustotalop/JarPatcher) - JarPatcher is the first project I worked on with ClassLoaders and it inspired me to make ObsidianEngine.
 
 [SnakeYaml](https://bitbucket.org/asomov/snakeyaml) - For the easy to use configuration formatting library that so many Bukkit developers have either grown to love or hate. 
 
