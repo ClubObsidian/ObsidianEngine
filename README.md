@@ -16,6 +16,8 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 //Todo
 
 # Credits
+[ASM](http://forge.ow2.org/projects/asm/) - ASM library used for event4j.
+
 [Apache Foundation](https://www.apache.org/) - For their great libraries, their logging library is used in ObsidianEngine due to its ease of integration.
 
 [Bukkit](https://github.com/Bukkit/Bukkit) - For inspiring the project, I've taken a similar approach in design philosophy from the project
