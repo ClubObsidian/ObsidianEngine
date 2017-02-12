@@ -13,14 +13,14 @@ public class TestListener implements Listener {
 	public void test(TestEvent e)
 	{
 		this.fired += 1;
-		System.out.println("Fired: " + this.fired);
+		//if(fired % 10000 == 0)
+		//	System.out.println("Fired: " + this.fired);
 		if(this.fired == 1)
 		{
 			this.start = System.currentTimeMillis();
 		}
 		else
 		{
-			this.fired += 1;
 			if(this.fired == 1000000)
 			{
 				ObsidianEngine.getLogger().info("Time for 1 million events: " + (System.currentTimeMillis() - this.start) + "ms");

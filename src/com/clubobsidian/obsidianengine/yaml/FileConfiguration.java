@@ -49,14 +49,12 @@ public class FileConfiguration {
 			}
 			else if(value instanceof HashMap)
 			{
-				System.out.println("key: " + key + " is a hashmap");
 				HashMap<String, Object> map = (HashMap<String, Object>) value;
 				file.values.put(key, map);
 				for(Entry<String, Object> entry : map.entrySet())
 				{
 					recurHashMap(map, entry.getKey(), entry.getValue());
 				}
-				
 			}
 			else
 			{
@@ -78,7 +76,6 @@ public class FileConfiguration {
 	private static void recurHashMap(Object previous, String key, Object current)
 	{
 		LinkedHashMap<String, Object> map = ((LinkedHashMap<String, Object>) previous);
-		System.out.println("Top level: " +  key + current.toString() + " class: " + current.getClass());
 		if(current instanceof ArrayList)
 		{
 			ArrayList<?> list = (ArrayList<?>) current;
@@ -88,16 +85,13 @@ public class FileConfiguration {
 		else if(current instanceof String)
 		{
 			String str = (String) current;
-			System.out.println("Recur: " + str);
 			map.put(key, ((str).toCharArray()));
 		}
 		else if(current instanceof LinkedHashMap)
 		{
 			map.put(key, current);
-			System.out.println(key + " is a hashmap");
 			
 			LinkedHashMap<String, Object> currentMap = (LinkedHashMap<String, Object>) current;
-			System.out.println("Current map: " + currentMap);
 			
 			for(Entry<String, Object> entry : currentMap.entrySet())
 			{
@@ -174,13 +168,7 @@ public class FileConfiguration {
 	
 	public String getString(String key)
 	{
-		//Object obj = this.values.get(key);
-	//	if(!(obj instanceof char[]))
-		//{
-		//	return obj.toString();
-		//}
 		return (String) this.get(key);
-		//return String.valueOf(new CloneWrapper<char[]>().clone(obj));
 	}
 	
 	public Boolean getBoolean(String key)
@@ -202,31 +190,18 @@ public class FileConfiguration {
 	{
 		if(key.contains("."))
 		{
-			System.out.println("Key has .");
 			String[] split = key.split("\\.");
 			Object current = this.values.get(split[0]);
 			for(int i = 1; i < split.length + 1; i++)
 			{
-				
-				/*if(current == null)
-				{
-					current = split[i];
-					System.out.println("Null: " + current);
-					return null;
-				}*/
-				
-				if(current != null)
-					System.out.println("current " + current.getClass());
 				if(current instanceof LinkedHashMap)
 				{
-					System.out.println("hashmap: " + current);
 					LinkedHashMap<String, Object> currentMap = (LinkedHashMap<String,Object>) current;
 					current = currentMap.get(split[i]);
 				}
 				else if(current instanceof char[])
 				{
 					String str = String.valueOf(new CloneWrapper<char[]>().clone(current));
-					System.out.println("String: " + str);
 					return str;
 				}
 				else

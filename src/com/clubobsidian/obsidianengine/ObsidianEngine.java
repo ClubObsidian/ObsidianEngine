@@ -5,8 +5,8 @@ import java.net.URL;
 
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.command.CommandDispatcher;
-import com.clubobsidian.obsidianengine.event.EventDispatcher;
-import com.clubobsidian.obsidianengine.event.EventRegistry;
+import com.clubobsidian.obsidianengine.event.EventManager;
+import com.clubobsidian.obsidianengine.event.TestEvent;
 import com.clubobsidian.obsidianengine.listener.TestListener;
 import com.clubobsidian.obsidianengine.manager.JarManager;
 import com.clubobsidian.obsidianengine.manager.ModuleManager;
@@ -24,8 +24,7 @@ public class ObsidianEngine {
 	private static ModuleManager moduleManager = new ModuleManager();
 	private static JarManager jarManager = new JarManager();
 	private static BetterURLClassLoader loader;
-	private static EventDispatcher eventDispatcher;
-	private static EventRegistry eventRegistry;
+	private static EventManager eventDispatcher;
 	private static ConsoleUser consoleUser = new ConsoleUser();
 	private static CommandDispatcher commandDispatcher = new CommandDispatcher();
 	private static Scheduler scheduler = new Scheduler();
@@ -35,9 +34,7 @@ public class ObsidianEngine {
 	public static void main(final String[] args)
 	{
 		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());
-		
-		ObsidianEngine.eventRegistry = new EventRegistry();
-		ObsidianEngine.eventDispatcher = new EventDispatcher();
+		ObsidianEngine.eventDispatcher = new EventManager();
 		ObsidianEngine.setupEngineModule();
 		ObsidianEngine.getLogger().info("Starting ObsidianEngine...");
 		ObsidianEngine.moduleManager.preLoadModules();
@@ -57,7 +54,11 @@ public class ObsidianEngine {
 		{
 			if(args[0].equals("test"))
 			{
-				ObsidianEngine.eventRegistry.register(new TestListener());
+				ObsidianEngine.getEventManager().register(new TestListener());
+				for(int i = 0; i < 1000000; i++)
+				{
+					ObsidianEngine.getEventManager().dispatchEvent(new TestEvent());
+				}
 			}
 		}
 	}
@@ -95,14 +96,9 @@ public class ObsidianEngine {
 		return ObsidianEngine.moduleManager.getModules();
 	}
 	
-	public static EventDispatcher getEventDispatcher()
+	public static EventManager getEventManager()
 	{
 		return ObsidianEngine.eventDispatcher;
-	}
-	
-	public static EventRegistry getEventRegistry()
-	{
-		return ObsidianEngine.eventRegistry;
 	}
 	
 	public static ConsoleUser getConsoleUser()
