@@ -52,14 +52,7 @@ public class ObsidianEngine {
 		
 		if(args.length > 0)
 		{
-			if(args[0].equals("test"))
-			{
-				ObsidianEngine.getEventManager().register(new TestListener());
-				for(int i = 0; i < 1000000; i++)
-				{
-					ObsidianEngine.getEventManager().dispatchEvent(new TestEvent());
-				}
-			}
+			
 		}
 	}
 

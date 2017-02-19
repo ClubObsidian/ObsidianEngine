@@ -3,6 +3,7 @@ package com.clubobsidian.obsidianengine.command;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.clubobsidian.obsidianengine.ObsidianEngine;
 import com.clubobsidian.obsidianengine.event.command.CommandExecuteEvent;
 import com.clubobsidian.obsidianengine.user.User;
 
@@ -56,6 +57,11 @@ public class CommandDispatcher {
 				}
 				Command cmd = this.commandMap.get(executor);
 				CommandExecuteEvent event = new CommandExecuteEvent(name, args);
+				if(!user.hasPermission(cmd.getPermission()))
+				{
+					event.setCancelled(true);
+				}
+				ObsidianEngine.getEventManager().dispatchEvent(event);
 				if(!event.isCancelled())
 				{
 					executor.onCommand(user, cmd, args);
