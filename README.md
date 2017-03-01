@@ -11,6 +11,7 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 # Todo
  * Re-write the module loader to fix the issue with circular dependencies and load-order
  * Choose a different logger library
+ * Write unit tests
 
 # Contributing
 //Todo
