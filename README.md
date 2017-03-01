@@ -8,7 +8,7 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 * How do I use this?
  * The project will be fully documented in the wiki when the project is in a mature state.
  
- # Todo
+# Todo
  * Re-write the module loader to fix the issue with circular dependencies and load-order
  * Choose a different logger library
 
