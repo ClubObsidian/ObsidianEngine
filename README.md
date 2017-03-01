@@ -7,10 +7,10 @@ ObsidianEngine is a modular based system to modify jars and more on runtime. Obs
 # FAQ
 * How do I use this?
  * The project will be fully documented in the wiki when the project is in a mature state.
-* It doesn't work?!?!!
- * The software isn't done and none of the code is documented, if you want to help you can open an issue and ask a question.
-* When will this be done?
- * I really couldn't tell you, its currently in a working state but hasn't been tested fully in production. Many parts are still in a volatile state such as dependency management. When the code will be finalized and the api will be mature enough to be used is yet to be determined.
+ 
+ # Todo
+ * Re-write the module loader to fix the issue with circular dependencies and load-order
+ * Choose a different logger library
 
 # Contributing
 //Todo
