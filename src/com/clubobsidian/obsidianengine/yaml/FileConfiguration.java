@@ -166,6 +166,17 @@ public class FileConfiguration {
 		return list;
 	}
 	
+	public ArrayList<Long> getLongList(String key)
+	{
+		Object[] ar = new CloneWrapper<Object[]>().clone(this.get(key));
+		ArrayList<Long> list = new ArrayList<Long>();
+		for(Object obj : ar)
+		{
+			list.add((Long) obj);
+		}
+		return list;
+	}
+	
 	public String getString(String key)
 	{
 		return (String) this.get(key);
@@ -184,6 +195,11 @@ public class FileConfiguration {
 	public Double getDouble(String key)
 	{
 		return new CloneWrapper<Double>().clone(this.get(key));
+	}
+	
+	public Long getLong(String key)
+	{
+		return new CloneWrapper<Long>().clone(this.get(key));
 	}
 	
 	public Object get(String key)

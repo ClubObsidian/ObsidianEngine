@@ -6,8 +6,6 @@ import java.net.URL;
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
 import com.clubobsidian.obsidianengine.command.CommandDispatcher;
 import com.clubobsidian.obsidianengine.event.EventManager;
-import com.clubobsidian.obsidianengine.event.TestEvent;
-import com.clubobsidian.obsidianengine.listener.TestListener;
 import com.clubobsidian.obsidianengine.manager.JarManager;
 import com.clubobsidian.obsidianengine.manager.ModuleManager;
 import com.clubobsidian.obsidianengine.module.Module;
