@@ -94,9 +94,10 @@ public class ModuleManager {
 							if(moduleYml.exists("main"))
 							{
 								mainClass = moduleYml.getString("main");
+								System.out.println(mainClass);
 								if(!moduleEntries.contains(mainClass))
 								{
-									ObsidianEngine.getLogger().fatal("The main class" + mainClass + " for module " + name + " does not exist, the module will not be loaded in!");
+									ObsidianEngine.getLogger().fatal("The main class " + mainClass + " for module " + name + " does not exist, the module will not be loaded in!");
 									continue;
 								}
 							}
@@ -108,7 +109,16 @@ public class ModuleManager {
 							
 							if(moduleYml.exists("version"))
 							{
-								version = moduleYml.getString("version");
+								Object ver = moduleYml.get("version");
+								if(ver instanceof Double)
+								{
+									version = String.valueOf((double) ver);
+								}
+								else if(version instanceof String)
+								{
+									version = (String) ver;
+								}
+								
 							}
 							else
 							{

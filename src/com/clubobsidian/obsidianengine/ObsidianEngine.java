@@ -27,8 +27,6 @@ public class ObsidianEngine {
 	private static CommandDispatcher commandDispatcher = new CommandDispatcher();
 	private static Scheduler scheduler = new Scheduler();
 	
-	public static String asdf = "sometestvalue";
-	
 	public static void main(final String[] args)
 	{
 		ObsidianEngine.loader = new BetterURLClassLoader(new URL[0], ObsidianEngine.class.getClassLoader());

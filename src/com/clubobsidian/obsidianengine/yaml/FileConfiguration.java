@@ -232,7 +232,7 @@ public class FileConfiguration {
 			Object obj = this.values.get(key);
 			if(obj instanceof char[])
 			{
-				return new CloneWrapper<String>().clone((String) key);
+				return new CloneWrapper<String>().clone(String.valueOf((char[]) obj));
 			}
 			return new CloneWrapper<Object>().clone(obj);
 		}
