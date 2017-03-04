@@ -179,7 +179,7 @@ public class FileConfiguration {
 	
 	public String getString(String key)
 	{
-		return (String) this.get(key);
+		return new CloneWrapper<String>().clone((String) this.get(key));
 	}
 	
 	public Boolean getBoolean(String key)
@@ -232,7 +232,7 @@ public class FileConfiguration {
 			Object obj = this.values.get(key);
 			if(obj instanceof char[])
 			{
-				return this.getString(key);
+				return new CloneWrapper<String>().clone((String) key);
 			}
 			return new CloneWrapper<Object>().clone(obj);
 		}
