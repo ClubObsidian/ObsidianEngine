@@ -240,7 +240,7 @@ public class FileConfiguration {
 	
 	public boolean exists(String key)
 	{
-		return this.values.containsKey(key);
+		return this.get(key) != null;
 	}
 	
 	public void set(String key, Object object)
