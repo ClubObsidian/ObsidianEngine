@@ -9,7 +9,10 @@ public abstract class User {
 	
 	public boolean hasPermission(final String permission)
 	{
-		final String finalPermission = permission.toLowerCase();
+		if(permission == null)
+			return false;
+		
+		final String finalPermission = permission.toLowerCase().trim();
 		if(this.getPermissions().contains("*"))
 		{
 			return true;
@@ -17,8 +20,19 @@ public abstract class User {
 		else
 		{
 			for(String p : this.getPermissions())
-			{
-				if(p.toLowerCase().equals(finalPermission))
+			{	
+				if(p.endsWith("*") && finalPermission.charAt(finalPermission.charAt(finalPermission.length() - 1)) != '*')
+				{
+					if(p.contains("."))
+					{
+						String pStart = finalPermission.substring(0, finalPermission.lastIndexOf("." + 1));
+						if(finalPermission.startsWith(pStart))
+						{
+							return true;
+						}
+					}
+				}
+				else if(p.toLowerCase().equals(finalPermission))
 				{
 					return true;
 				}

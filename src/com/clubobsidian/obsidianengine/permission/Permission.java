@@ -6,10 +6,6 @@ public class Permission {
 	
 	public static boolean hasPermission(User user, String permission)
 	{
-		for(String perm : user.getPermissions())
-		{
-			return permission.equals(perm) || permission.equals("*"); //Add support for more wildcard permissions later
-		}
-		return false;
+		return user.hasPermission(permission); //Add support for more wildcard permissions later
 	}
 }
