@@ -21,15 +21,12 @@ public abstract class User {
 		{
 			for(String p : this.getPermissions())
 			{	
-				if(p.endsWith("*") && finalPermission.charAt(finalPermission.charAt(finalPermission.length() - 1)) != '*')
+				if(p.endsWith("*") && p.contains(".") && finalPermission.charAt(finalPermission.charAt(finalPermission.length() - 1)) != '*')
 				{
-					if(p.contains("."))
+					String pStart = finalPermission.substring(0, finalPermission.lastIndexOf("." + 1));
+					if(finalPermission.startsWith(pStart))
 					{
-						String pStart = finalPermission.substring(0, finalPermission.lastIndexOf("." + 1));
-						if(finalPermission.startsWith(pStart))
-						{
-							return true;
-						}
+						return true;
 					}
 				}
 				else if(p.toLowerCase().equals(finalPermission))
