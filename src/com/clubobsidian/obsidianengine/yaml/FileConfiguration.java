@@ -230,7 +230,11 @@ public class FileConfiguration {
 		else
 		{
 			Object obj = this.values.get(key);
-			if(obj instanceof char[])
+			if(obj == null)
+			{
+				return null;
+			}
+			else if(obj instanceof char[])
 			{
 				return new CloneWrapper<String>().clone(String.valueOf((char[]) obj));
 			}

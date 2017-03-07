@@ -4,7 +4,10 @@ import java.lang.reflect.Field;
 import java.net.URL;
 
 import com.clubobsidian.obsidianengine.classloader.BetterURLClassLoader;
+import com.clubobsidian.obsidianengine.command.CommandBuilder;
 import com.clubobsidian.obsidianengine.command.CommandDispatcher;
+import com.clubobsidian.obsidianengine.command.engine.GCCommand;
+import com.clubobsidian.obsidianengine.command.engine.StopCommand;
 import com.clubobsidian.obsidianengine.event.EventManager;
 import com.clubobsidian.obsidianengine.manager.JarManager;
 import com.clubobsidian.obsidianengine.manager.ModuleManager;
@@ -39,6 +42,8 @@ public class ObsidianEngine {
 		ObsidianEngine.jarManager.loadJar(args);
 		ObsidianEngine.moduleManager.enableModules();
 
+		ObsidianEngine.registerCommands();
+		
 		if(ObsidianEngine.jarManager.getStandalone())
 		{
 			ConsoleThread consoleThread = new ConsoleThread();
@@ -50,6 +55,8 @@ public class ObsidianEngine {
 		{
 			
 		}
+		
+		
 	}
 
 	private static void setupEngineModule()
@@ -68,6 +75,21 @@ public class ObsidianEngine {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private static void registerCommands()
+	{
+		new CommandBuilder()
+		.setExecutor(new StopCommand())
+		.setName("stop")
+		.setPermission("obsidianengine.command.stop")
+		.build();
+		
+		new CommandBuilder()
+		.setExecutor(new GCCommand())
+		.setName("gc")
+		.setPermission("obsidianengine.command.gc")
+		.build();
 	}
 	
 	public static ModuleLogger getLogger()
